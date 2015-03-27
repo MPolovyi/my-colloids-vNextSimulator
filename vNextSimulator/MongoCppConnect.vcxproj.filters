@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DataSave">
+      <UniqueIdentifier>{62c57ec3-daed-4c1a-b22a-fd569a29d6b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator">
+      <UniqueIdentifier>{d83d2a1c-7dd8-4dae-8bd7-ac5907973b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Programm">
+      <UniqueIdentifier>{b22cced8-7298-4c1a-9a89-81b33cd8ec66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\Noise">
+      <UniqueIdentifier>{5adc0193-c833-43a0-90e7-429246ed63e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\BorderConditions">
+      <UniqueIdentifier>{cc883f4b-4ea2-404a-b862-14aaedd8e5d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\ParticleInterraction">
+      <UniqueIdentifier>{96d431b4-d53d-4bd8-9232-6b58a88bb5b9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Programm</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Programm</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulator.h">
+      <Filter>Simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSnap.h">
+      <Filter>DataSave</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Simulator\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformNoiseRotation.h">
+      <Filter>Simulator\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularTransitionalBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="VicsecPPInterractor.h">
+      <Filter>Simulator\ParticleInterraction</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleSaver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MongoCppConnect.cpp">
+      <Filter>Programm</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Programm</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulator.cpp">
+      <Filter>Simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSnap.cpp">
+      <Filter>DataSave</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Simulator\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformNoiseRotation.cpp">
+      <Filter>Simulator\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularTransitionalBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="VicsecPPInterractor.cpp">
+      <Filter>Simulator\ParticleInterraction</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleSaver.cpp" />
+  </ItemGroup>
+</Project>
