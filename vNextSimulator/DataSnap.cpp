@@ -6,7 +6,7 @@
 
 CDataSnap::CDataSnap(Simulator::CSimulator& s)
 {
-	simGuid = *s.pGuid;
+	simGuid = s.Guid;
 	SaveParticleData(s);
 	SaveVelocityData(s);
 	SaveDencityData(s);
@@ -19,10 +19,10 @@ CDataSnap::~CDataSnap()
 void CDataSnap::SaveParticleData(Simulator::CSimulator& s)
 {
 	auto particleDat = s.GetParticles();
-	m_ParticleData.reserve(particleDat.size());
+	ParticleData.reserve(particleDat.size());
 	for (auto particle : particleDat)
 	{
-		m_ParticleData.push_back(std::pair<blaze::Vec2d, blaze::Vec2d>(
+		ParticleData.push_back(std::pair<blaze::Vec2d, blaze::Vec2d>(
 			blaze::Vec2d(particle.Coords),
 			blaze::Vec2d(particle.Velocity)));
 	}
@@ -72,11 +72,23 @@ void CDataSnap::SaveVelocityData(Simulator::CSimulator& s,
 	std::vector<std::thread> workers;
 	for (int i = 0; i < CoordsAndExtents.size(); i++)
 	{
+		//for (auto particle : particles)
+		//{
+		//	int index = i;
+		//	blaze::Vec2d particleVector = blaze::abs(particle.Coords - CoordsAndExtents[index].first);
+
+		//	if (particleVector[0] <= CoordsAndExtents[index].second[0] &&
+		//		particleVector[1] <= CoordsAndExtents[index].second[1])
+		//	{
+		//		result[index] += particle.Velocity;
+		//		particleCount[index] += 1;
+		//	}
+		//}
 		workers.push_back(std::thread(
 			[](std::vector<blaze::Vec2d>& result,
 			std::vector<Simulator::CParticle>& particles,
 			std::vector<std::pair<blaze::Vec2d, blaze::Vec2d>>& CoordsAndExtents,
-			std::vector<int> particleCount,
+			std::vector<int>& particleCount,
 			int index) {
 			for (auto particle : particles)
 			{
@@ -94,8 +106,9 @@ void CDataSnap::SaveVelocityData(Simulator::CSimulator& s,
 
 	for (int i = 0; i < result.size(); i++)
 	{
-		m_AverageVelocityData.push_back(
-			std::tuple<blaze::Vec2d, blaze::Vec2d, blaze::Vec2d>(CoordsAndExtents[i].first, CoordsAndExtents[i].second, result[i] / particleCount[i]));
+		AverageVelocityData.push_back(
+			Coord_AreaExtent_Velocity_NumParticles(
+			CoordsAndExtents[i].first, CoordsAndExtents[i].second, result[i] / particleCount[i], particleCount[i]));
 	}
 }
 void CDataSnap::SaveDencityData(Simulator::CSimulator& s) 
@@ -111,7 +124,7 @@ void CDataSnap::SaveDencityData(Simulator::CSimulator& s,
 
 	std::vector<double> squares;
 	squares.resize(CoordsAndExtents.size());
-
+	
 	double square = s.Extents[0] * s.Extents[1];
 
 	auto particles = s.GetParticles();
@@ -142,7 +155,7 @@ void CDataSnap::SaveDencityData(Simulator::CSimulator& s,
 
 	for (int i = 0; i < CoordsAndExtents.size(); i++)
 	{
-		m_AverageDencityData.push_back(
-			std::tuple<blaze::Vec2d, blaze::Vec2d, double>(CoordsAndExtents[i].first, CoordsAndExtents[i].second, result[i] /= squares[i]));		
+		AverageDencityData.push_back(
+			Coord_AreaExtent_Dencity_NumParticles(CoordsAndExtents[i].first, CoordsAndExtents[i].second, result[i] / squares[i], result[i]));		
 	}
 }

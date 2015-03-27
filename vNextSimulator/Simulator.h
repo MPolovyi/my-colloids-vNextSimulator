@@ -12,7 +12,7 @@ namespace Simulator
 	{
 	public:
 		int Steps;
-		GUID* pGuid;
+		std::string Guid;
 		blaze::Vec2d Extents;
 		
 		//Previous noise, Steps with previous noises
@@ -22,7 +22,10 @@ namespace Simulator
 		void ChangeNoise(double degree);
 		const std::vector<CParticle>& GetParticles();
 
-		CSimulator(int particleCount);
+		CSimulator(int particleCount, double maxX, double maxY,
+			std::function<void(CParticle, CParticle)> ppInterract,
+			std::function<void(CParticle)> pbInterract,
+			std::function<void(CParticle, double)> noiseFunc);
 		~CSimulator();
 	private:
 		int m_ParticleCount;
@@ -32,6 +35,8 @@ namespace Simulator
 		std::function<void(CParticle, CParticle)> m_ParticleParticleInterract;
 		std::function<void(CParticle)> m_ParticleBorderInterract;
 		std::function<void(CParticle, double)> m_NoiseFunction;
+
+		void CreateGuid();
 	};
 
 }

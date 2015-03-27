@@ -1,31 +1,29 @@
 #pragma once
 #include "Simulator.h"
 
-
-
 class CDataSnap
 {
+	typedef std::tuple<blaze::Vec2d, blaze::Vec2d, blaze::Vec2d, double> Coord_AreaExtent_Velocity_NumParticles;
+	typedef std::tuple<blaze::Vec2d, blaze::Vec2d, double, double> Coord_AreaExtent_Dencity_NumParticles;
 public:
 	CDataSnap(Simulator::CSimulator& s);
 	~CDataSnap();
-private:
-	double m_Noize;
 
-	int m_stepsFromStart;
-
-	GUID simGuid;
+	double Noize;
+	int stepsFromStart;
+	std::string simGuid;
 
 	//Previous noise, Steps with previous noises
-	std::vector<std::pair<double, int>> m_PreviousSimulations;
+	std::vector<std::pair<double, int>> PreviousSimulations;
 
 	//Coordinate, Velocity
-	std::vector<std::pair<blaze::Vec2d, blaze::Vec2d>> m_ParticleData;
+	std::vector<std::pair<blaze::Vec2d, blaze::Vec2d>> ParticleData;
 	
-	//Coordinate, AreaExtents, Velocity
-	std::vector<std::tuple<blaze::Vec2d, blaze::Vec2d, blaze::Vec2d>> m_AverageVelocityData;
+	//Coordinate, AreaExtents, Velocity, NumParticles
+	std::vector<Coord_AreaExtent_Velocity_NumParticles> AverageVelocityData;
 
-	//Coordinate, AreaExtents, Dencity
-	std::vector<std::tuple<blaze::Vec2d, blaze::Vec2d, double>> m_AverageDencityData;
+	//Coordinate, AreaExtents, Dencity, NumParticles
+	std::vector<Coord_AreaExtent_Dencity_NumParticles> AverageDencityData;
 
 	void SaveParticleData(Simulator::CSimulator& s);
 	void SaveVelocityData(Simulator::CSimulator& s);

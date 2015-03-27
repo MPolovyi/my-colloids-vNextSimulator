@@ -55,12 +55,11 @@
     <ClInclude Include="VicsecPPInterractor.h">
       <Filter>Simulator\ParticleInterraction</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleSaver.h" />
+    <ClInclude Include="SimpleSaver.h">
+      <Filter>DataSave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MongoCppConnect.cpp">
-      <Filter>Programm</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Programm</Filter>
     </ClCompile>
@@ -85,6 +84,11 @@
     <ClCompile Include="VicsecPPInterractor.cpp">
       <Filter>Simulator\ParticleInterraction</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleSaver.cpp" />
+    <ClCompile Include="SimpleSaver.cpp">
+      <Filter>DataSave</Filter>
+    </ClCompile>
+    <ClCompile Include="vNextSimulator.cpp">
+      <Filter>Programm</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

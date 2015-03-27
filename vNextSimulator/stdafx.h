@@ -13,4 +13,10 @@
 
 
 // TODO: reference additional headers your program requires here
+#include <iostream>
+#include <cstdlib>
+#include <vector>
+#include <functional>
+#include <string>
+
 #include "blaze\Blaze.h"

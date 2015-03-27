@@ -29,13 +29,35 @@
 //
 //#include "mongo/client/dbclient.h"
 //#include <boost/system/config.hpp>
-#include <iostream>
-#include <cstdlib>
 
-
+#include "Simulator.h"
+#include "VicsecPPInterractor.h"
+#include "UniformNoiseRotation.h"
+#include "RectangularTransitionalBorders.h"
+#include "DataSnap.h"
+#include "SimpleSaver.h"
 
 int main(int argc, const char **argv)
 {
+	Simulator::CSimulator s(200, 10, 10,
+		Simulator::CVicsecPPInterractor(),
+		Simulator::CRectangularTransitionalBorders(10, 10),
+		Simulator::CUniformNoiseRotation());
+
+	s.ChangeNoise(100);
+
+	int i = 0;
+	while (i++ < 2)
+	{
+		std::cout << i;
+		s.Interract();
+		std::cout << i;
+	}
+
+	CDataSnap dSnap(s);
+
+	CSimpleSaver saver;
+	saver.SaveVelocityVsNoise("VelocityVsNoise.txt", dSnap);
 
 	return EXIT_SUCCESS;
 }
