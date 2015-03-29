@@ -6,7 +6,7 @@ namespace Simulator
 	CUniformNoiseRotation::CUniformNoiseRotation()
 	{}
 
-	void CUniformNoiseRotation::operator()(CParticle particle, double noise)
+	void CUniformNoiseRotation::operator()(CParticle& particle, double noise)
 	{
 		auto radian = (particle.rndGen() - 0.5)*noise*3.1415926 / 180.0;
 

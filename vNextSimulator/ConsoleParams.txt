@@ -1,0 +1,9 @@
+--borderConditions=[transitional, KuetteRefl, KuetteRough, KuetteDouble]
+--numOfSimultors
+--numOfParticles
+--maxNoise
+--minNoise
+--noiseStep
+--particleVelocity
+--sizeX
+--sizeY

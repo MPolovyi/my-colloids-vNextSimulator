@@ -6,7 +6,7 @@ namespace Simulator
 	{
 	public:
 		double rInt = 1;
-		void operator()(CParticle, CParticle);
+		void operator()(CParticle&, CParticle&);
 		CVicsecPPInterractor();
 		~CVicsecPPInterractor();
 	};

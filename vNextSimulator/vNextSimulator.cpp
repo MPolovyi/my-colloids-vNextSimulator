@@ -22,13 +22,6 @@
 // It is the responsibility of the mongo client consumer to ensure that any necessary windows
 // headers have already been included before including the driver facade headers.
 #include "stdafx.h"
-//#if defined(_WIN32)
-//#include <winsock2.h>
-//#include <windows.h>
-//#endif
-//
-//#include "mongo/client/dbclient.h"
-//#include <boost/system/config.hpp>
 
 #include "Simulator.h"
 #include "VicsecPPInterractor.h"
@@ -36,28 +29,36 @@
 #include "RectangularTransitionalBorders.h"
 #include "DataSnap.h"
 #include "SimpleSaver.h"
+#include "JSONSaver.h"
+
+#include "SimulationManager.h"
 
 int main(int argc, const char **argv)
 {
-	Simulator::CSimulator s(200, 10, 10,
+	Simulator::CSimulator s(1000, 31, 31,
 		Simulator::CVicsecPPInterractor(),
-		Simulator::CRectangularTransitionalBorders(10, 10),
+		Simulator::CRectangularTransitionalBorders(31, 31),
 		Simulator::CUniformNoiseRotation());
 
-	s.ChangeNoise(100);
+	s.ChangeNoise(360);
+
+	const char* par[] =
+	{ " ", "--numOfSimulators=2", "--numOfParticles=100 100"};
+
+	CSimulationManager cs(3, par);
 
 	int i = 0;
-	while (i++ < 2)
+	while (i++ < 500)
 	{
-		std::cout << i;
+		std::cout << "Before "<< i << std::endl;
 		s.Interract();
-		std::cout << i;
+		std::cout << "After " << i << std::endl;
 	}
 
 	CDataSnap dSnap(s);
-
-	CSimpleSaver saver;
-	saver.SaveVelocityVsNoise("VelocityVsNoise.txt", dSnap);
+	
+	CJSONSaver jSaver;
+	jSaver.SaveAll("AllDataFile.txt", dSnap);
 
 	return EXIT_SUCCESS;
 }

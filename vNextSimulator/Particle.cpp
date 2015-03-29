@@ -12,7 +12,6 @@ namespace Simulator
 	{
 		rndGen.seed(id);
 		Id = id;
-
 		Reset(maxX, maxY);
 	}
 
@@ -29,8 +28,9 @@ namespace Simulator
 		Coords[0] = rndGen()*maxX;
 		Coords[1] = rndGen()*maxY;
 
-		Velocity[0] = rndGen();
-		Velocity[1] = rndGen();
+		Velocity[0] = 0.5 - rndGen();
+		Velocity[1] = 0.5 - rndGen();
+		Velocity = blaze::normalize(Velocity);
 	}
 
 	bool CParticle::operator==(const CParticle& rhs)

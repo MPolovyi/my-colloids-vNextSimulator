@@ -6,12 +6,21 @@
 
 CDataSnap::CDataSnap(Simulator::CSimulator& s)
 {
-	simGuid = s.Guid;
+	SaveMiscInfo(s);
 	SaveParticleData(s);
 	SaveVelocityData(s);
 	SaveDencityData(s);
 }
 
+void CDataSnap::SaveMiscInfo(Simulator::CSimulator& s)
+{
+	simGuid = s.Guid;
+	stepsFromStart = s.Steps;
+	Noise = s.GetNoise();
+	PreviousSimulations = std::vector<std::pair<double, int>>(s.PreviousNoises.begin(), s.PreviousNoises.end());
+	ParticleCount = s.GetParticleCount();
+	ParticleVelocity = s.GetParticleVelocity();
+}
 
 CDataSnap::~CDataSnap()
 {}

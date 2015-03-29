@@ -4,7 +4,7 @@
 
 namespace Simulator
 {
-	void CVicsecPPInterractor::operator()(CParticle a, CParticle b)
+	void CVicsecPPInterractor::operator()(CParticle& a, CParticle& b)
 	{
 		if (blaze::length(a.Coords - b.Coords) <= rInt)
 		{

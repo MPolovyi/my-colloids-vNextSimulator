@@ -8,7 +8,7 @@ namespace Simulator
 		m_X = x; m_Y = y;
 	}
 
-	void CRectangularTransitionalBorders::operator()(CParticle particle)
+	void CRectangularTransitionalBorders::operator()(CParticle& particle)
 	{
 		auto xCoord = particle.Coords[0];
 		auto yCoord = particle.Coords[1];

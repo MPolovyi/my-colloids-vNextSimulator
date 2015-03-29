@@ -9,8 +9,10 @@ public:
 	CDataSnap(Simulator::CSimulator& s);
 	~CDataSnap();
 
-	double Noize;
+	int ParticleCount;
+	double ParticleVelocity;
 	int stepsFromStart;
+	double Noise;
 	std::string simGuid;
 
 	//Previous noise, Steps with previous noises
@@ -25,6 +27,7 @@ public:
 	//Coordinate, AreaExtents, Dencity, NumParticles
 	std::vector<Coord_AreaExtent_Dencity_NumParticles> AverageDencityData;
 
+	void SaveMiscInfo(Simulator::CSimulator& s);
 	void SaveParticleData(Simulator::CSimulator& s);
 	void SaveVelocityData(Simulator::CSimulator& s);
 	void SaveDencityData(Simulator::CSimulator& s);

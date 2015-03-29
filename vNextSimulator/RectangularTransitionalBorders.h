@@ -7,7 +7,7 @@ namespace Simulator
 	{
 	public:
 		CRectangularTransitionalBorders(double x, double y);
-		void operator()(CParticle particle);
+		void operator()(CParticle& particle);
 		~CRectangularTransitionalBorders();
 	private:
 		double m_X;

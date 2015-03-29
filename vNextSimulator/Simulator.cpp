@@ -1,12 +1,13 @@
 #include "stdafx.h"
+#include <ppl.h>
 #include "Simulator.h"
 
 namespace Simulator
 {
 	CSimulator::CSimulator(int particleCount, double maxX, double maxY,
-		std::function<void(CParticle, CParticle)> ppInterract,
-		std::function<void(CParticle)> pbInterract,
-		std::function<void(CParticle, double)> noiseFunc)
+		std::function<void(CParticle&, CParticle&)> ppInterract,
+		std::function<void(CParticle&)> pbInterract,
+		std::function<void(CParticle&, double)> noiseFunc)
 	{
 		CreateGuid();
 
@@ -24,6 +25,9 @@ namespace Simulator
 		m_NoiseFunction = noiseFunc;
 	}
 
+	double CSimulator::GetNoise() { return m_Noise; }
+	double CSimulator::GetParticleVelocity() { return m_ParticleVelocity; }
+	double CSimulator::GetParticleCount() { return m_ParticleCount; }
 	void CSimulator::CreateGuid()
 	{
 		GUID guid;
@@ -41,22 +45,24 @@ namespace Simulator
 
 	void CSimulator::Interract()
 	{
-		for (int i = 0; i < m_ParticleCount; i++)
+		concurrency::parallel_for(0, m_ParticleCount, [&](int i) 
 		{
+			m_ParticlesNew[i].Coords = m_ParticlesOld[i].Coords;
+			m_ParticlesNew[i].Velocity = m_ParticlesOld[i].Velocity;
 			for (int j = 0; j < m_ParticleCount; j++)
 			{
 				if (m_ParticlesNew[i] != m_ParticlesOld[j])
 					m_ParticleParticleInterract(m_ParticlesNew[i], m_ParticlesOld[j]);
 			}
-		}
+		});
 
-		for (int i = 0; i < m_ParticleCount; i++)
-		{
+		concurrency::parallel_for(0, m_ParticleCount, [&](int i) {
 			m_ParticlesNew[i].Velocity = blaze::normalize(m_ParticlesNew[i].Velocity);
-			m_ParticlesNew[i].Coords += m_ParticlesNew[i].Velocity * 0.1;
+			m_ParticlesNew[i].Coords += m_ParticlesNew[i].Velocity * m_ParticleVelocity;
 			m_ParticleBorderInterract(m_ParticlesNew[i]);
 			m_NoiseFunction(m_ParticlesNew[i], m_Noise);
-		}
+		});
+
 		std::swap(m_ParticlesNew, m_ParticlesOld);
 		Steps++;
 	}

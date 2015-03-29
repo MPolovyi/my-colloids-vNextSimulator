@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="ConsoleParams.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -58,6 +59,12 @@
     <ClInclude Include="SimpleSaver.h">
       <Filter>DataSave</Filter>
     </ClInclude>
+    <ClInclude Include="JSONSaver.h">
+      <Filter>DataSave</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationManager.h">
+      <Filter>Programm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +95,12 @@
       <Filter>DataSave</Filter>
     </ClCompile>
     <ClCompile Include="vNextSimulator.cpp">
+      <Filter>Programm</Filter>
+    </ClCompile>
+    <ClCompile Include="JSONSaver.cpp">
+      <Filter>DataSave</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationManager.cpp">
       <Filter>Programm</Filter>
     </ClCompile>
   </ItemGroup>

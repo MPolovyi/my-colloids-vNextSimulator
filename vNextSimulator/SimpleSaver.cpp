@@ -10,11 +10,10 @@ CSimpleSaver::CSimpleSaver()
 void CSimpleSaver::SaveVelocityVsNoise(std::string fName, CDataSnap ds)
 {
 	std::ofstream myfile;
-	myfile.open(fName);
-	myfile << "GUID = " << ds.simGuid;
-	for (auto data : ds.AverageVelocityData)
+	myfile.open(fName, std::ios::app);
+	for (auto data : ds.ParticleData)
 	{
-		myfile << ds.Noize << " " << blaze::length(std::get<2>(data)) << " " << std::get<3>(data) << std::endl;
+		myfile << std::get<0>(data)[0] << " " << std::get<0>(data)[1] << " "<< std::get<1>(data)[0] << " " << std::get<1>(data)[1] << std::endl;
 	}
 	myfile.close();
 }

@@ -101,13 +101,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\mongoCppDriver\include;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm200</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\lib;D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,7 +138,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\mongoCppDriver\include;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm200</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -146,14 +146,17 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\lib;D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="ConsoleParams.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="JSONSaver.h" />
     <ClInclude Include="SimpleSaver.h" />
+    <ClInclude Include="SimulationManager.h" />
     <ClInclude Include="VicsecPPInterractor.h" />
     <ClInclude Include="DataSnap.h" />
     <ClInclude Include="mtrand.h" />
@@ -165,7 +168,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JSONSaver.cpp" />
     <ClCompile Include="SimpleSaver.cpp" />
+    <ClCompile Include="SimulationManager.cpp" />
     <ClCompile Include="VicsecPPInterractor.cpp" />
     <ClCompile Include="DataSnap.cpp" />
     <ClCompile Include="vNextSimulator.cpp" />
