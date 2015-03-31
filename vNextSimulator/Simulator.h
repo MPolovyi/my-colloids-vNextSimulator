@@ -20,16 +20,18 @@ namespace Simulator
 		std::vector<std::pair<double, int>> PreviousNoises;
 		
 		void Interract();
+		bool IsStable();
 		double GetNoise();
 		double GetParticleVelocity();
 		double GetParticleCount();
 		void ChangeNoise(double degree);
+
 		const std::vector<CParticle>& GetParticles();
 
 		CSimulator(int particleCount, double maxX, double maxY,
 			std::function<void(CParticle&, CParticle&)> ppInterract,
 			std::function<void(CParticle&)> pbInterract,
-			std::function<void(CParticle&, double)> noiseFunc);
+			std::function<void(CParticle&, double)> noiseFunc, double initNoise);
 		~CSimulator();
 	private:
 		int m_ParticleCount;
@@ -41,7 +43,7 @@ namespace Simulator
 		std::function<void(CParticle&)> m_ParticleBorderInterract;
 		std::function<void(CParticle&, double)> m_NoiseFunction;
 
-		void CreateGuid();
+		GUID CreateGuid();
 	};
 
 }

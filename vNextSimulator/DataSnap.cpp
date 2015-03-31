@@ -6,6 +6,7 @@
 
 CDataSnap::CDataSnap(Simulator::CSimulator& s)
 {
+	std::cout << "Creating data snap" << std::endl;
 	SaveMiscInfo(s);
 	SaveParticleData(s);
 	SaveVelocityData(s);
@@ -81,18 +82,6 @@ void CDataSnap::SaveVelocityData(Simulator::CSimulator& s,
 	std::vector<std::thread> workers;
 	for (int i = 0; i < CoordsAndExtents.size(); i++)
 	{
-		//for (auto particle : particles)
-		//{
-		//	int index = i;
-		//	blaze::Vec2d particleVector = blaze::abs(particle.Coords - CoordsAndExtents[index].first);
-
-		//	if (particleVector[0] <= CoordsAndExtents[index].second[0] &&
-		//		particleVector[1] <= CoordsAndExtents[index].second[1])
-		//	{
-		//		result[index] += particle.Velocity;
-		//		particleCount[index] += 1;
-		//	}
-		//}
 		workers.push_back(std::thread(
 			[](std::vector<blaze::Vec2d>& result,
 			std::vector<Simulator::CParticle>& particles,

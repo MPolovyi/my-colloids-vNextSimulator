@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <ppl.h>
 #include "Simulator.h"
 
 namespace Simulator
@@ -7,15 +6,16 @@ namespace Simulator
 	CSimulator::CSimulator(int particleCount, double maxX, double maxY,
 		std::function<void(CParticle&, CParticle&)> ppInterract,
 		std::function<void(CParticle&)> pbInterract,
-		std::function<void(CParticle&, double)> noiseFunc)
+		std::function<void(CParticle&, double)> noiseFunc, double initNoise)
 	{
-		CreateGuid();
-
+		auto guid = CreateGuid();
+		auto ptIndexShufle = guid.Data2 + guid.Data3 +
+			guid.Data4[0] + guid.Data4[1] + guid.Data4[2];
 		m_ParticleCount = particleCount;
 		for (int i = 0; i < m_ParticleCount; i++)
 		{
-			m_ParticlesOld.push_back(CParticle(i, maxX, maxY)); 
-			m_ParticlesNew.push_back(CParticle(i, maxX, maxY));
+			m_ParticlesOld.push_back(CParticle(ptIndexShufle + i, maxX, maxY));
+			m_ParticlesNew.push_back(CParticle(ptIndexShufle + i, maxX, maxY));
 		}
 
 		Extents = blaze::Vec2d(maxX, maxY);
@@ -23,12 +23,14 @@ namespace Simulator
 		m_ParticleParticleInterract = ppInterract;
 		m_ParticleBorderInterract = pbInterract;
 		m_NoiseFunction = noiseFunc;
+		m_Noise = initNoise;
+		Steps = 0;
 	}
 
 	double CSimulator::GetNoise() { return m_Noise; }
 	double CSimulator::GetParticleVelocity() { return m_ParticleVelocity; }
 	double CSimulator::GetParticleCount() { return m_ParticleCount; }
-	void CSimulator::CreateGuid()
+	GUID CSimulator::CreateGuid()
 	{
 		GUID guid;
 		CoCreateGuid(&guid);
@@ -41,6 +43,8 @@ namespace Simulator
 			guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
 			guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
 		Guid = buff;
+
+		return guid;
 	}
 
 	void CSimulator::Interract()
@@ -67,10 +71,18 @@ namespace Simulator
 		Steps++;
 	}
 
+	bool CSimulator::IsStable()
+	{
+		if (Steps > 1000)
+			return true;
+		else
+			return false;
+	}
+
 	void CSimulator::ChangeNoise(double degree)
 	{
 		PreviousNoises.push_back(std::pair<double, int>(m_Noise, Steps));
-		m_Noise = degree;
+		m_Noise += degree;
 		Steps = 0;
 	}
 

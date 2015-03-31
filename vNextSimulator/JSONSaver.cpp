@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "JSONSaver.h"
 
-void CJSONSaver::SaveAll(std::string fName, CDataSnap data)
+void CJSONSaver::SaveAll(std::string fName, CDataSnap& data)
 {
 	rapidjson::StringBuffer s;
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> wr(s);
@@ -20,7 +20,7 @@ void CJSONSaver::SaveAll(std::string fName, CDataSnap data)
 	std::cout << "Finished saving" << std::endl;
 }
 
-void CJSONSaver::WriteMiscelaneousInfo(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap data)
+void CJSONSaver::WriteMiscelaneousInfo(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap& data)
 {
 	wr.String("Miscelaneous");
 	wr.StartObject();
@@ -54,7 +54,7 @@ void CJSONSaver::WriteMiscelaneousInfo(rapidjson::PrettyWriter<rapidjson::String
 	wr.EndObject();
 }
 
-void CJSONSaver::WriteData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap data)
+void CJSONSaver::WriteData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap& data)
 {
 	wr.String("Data");
 	wr.StartObject();
@@ -66,7 +66,7 @@ void CJSONSaver::WriteData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr,
 	wr.EndObject();
 }
 
-void CJSONSaver::WriteParticleData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap data) 
+void CJSONSaver::WriteParticleData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap& data) 
 {
 	wr.String("ParticleData");
 	wr.StartArray();
@@ -90,7 +90,7 @@ void CJSONSaver::WriteParticleData(rapidjson::PrettyWriter<rapidjson::StringBuff
 	wr.EndArray();
 }
 
-void CJSONSaver::WriteVelocityData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap data)
+void CJSONSaver::WriteVelocityData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap& data)
 {
 	wr.String("AverageVelocityData");
 	wr.StartArray();
@@ -126,7 +126,7 @@ void CJSONSaver::WriteVelocityData(rapidjson::PrettyWriter<rapidjson::StringBuff
 	wr.EndArray();
 }
 
-void CJSONSaver::WriteDencityData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap data)
+void CJSONSaver::WriteDencityData(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wr, CDataSnap& data)
 {
 	wr.String("AverageDencityData");
 	wr.StartArray();

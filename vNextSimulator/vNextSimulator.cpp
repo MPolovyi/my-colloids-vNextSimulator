@@ -34,31 +34,10 @@
 #include "SimulationManager.h"
 
 int main(int argc, const char **argv)
-{
-	Simulator::CSimulator s(1000, 31, 31,
-		Simulator::CVicsecPPInterractor(),
-		Simulator::CRectangularTransitionalBorders(31, 31),
-		Simulator::CUniformNoiseRotation());
+{	
+	CSimulationManager cs(argc, argv);
 
-	s.ChangeNoise(360);
-
-	const char* par[] =
-	{ " ", "--numOfSimulators=2", "--numOfParticles=100 100"};
-
-	CSimulationManager cs(3, par);
-
-	int i = 0;
-	while (i++ < 500)
-	{
-		std::cout << "Before "<< i << std::endl;
-		s.Interract();
-		std::cout << "After " << i << std::endl;
-	}
-
-	CDataSnap dSnap(s);
+	cs.RunSimulations();
 	
-	CJSONSaver jSaver;
-	jSaver.SaveAll("AllDataFile.txt", dSnap);
-
 	return EXIT_SUCCESS;
 }
