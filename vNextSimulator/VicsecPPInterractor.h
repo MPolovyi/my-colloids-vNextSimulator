@@ -6,9 +6,16 @@ namespace Simulator
 	{
 	public:
 		double rInt = 1;
-		void operator()(CParticle&, CParticle&);
-		CVicsecPPInterractor();
-		~CVicsecPPInterractor();
+		template<size_t spDim>
+		void operator()(CParticle<spDim>& a, CParticle<spDim>& b)
+		{
+			if (blaze::length(a.Coords - b.Coords) <= rInt)
+			{
+				a.Velocity += b.Velocity;
+			}
+		};
+		CVicsecPPInterractor() {};
+		~CVicsecPPInterractor() {};
 	};
 
 }

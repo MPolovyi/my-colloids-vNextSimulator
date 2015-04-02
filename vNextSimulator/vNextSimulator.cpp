@@ -23,21 +23,23 @@
 // headers have already been included before including the driver facade headers.
 #include "stdafx.h"
 
-#include "Simulator.h"
-#include "VicsecPPInterractor.h"
-#include "UniformNoiseRotation.h"
-#include "RectangularTransitionalBorders.h"
-#include "DataSnap.h"
-#include "SimpleSaver.h"
-#include "JSONSaver.h"
-
 #include "SimulationManager.h"
 
 int main(int argc, const char **argv)
 {	
-	CSimulationManager cs(argc, argv);
-
-	cs.RunSimulations();
+	if (argc > 1)
+	{
+		if (argv[1] == "--2D")
+		{
+			auto cs = CSimulationManager<2UL>(argc - 1, argv++);
+			cs.RunSimulations();
+		}
+		if (argv[1] == "--3D")
+		{
+			auto cs = CSimulationManager<3UL>(argc - 1, argv++);
+			cs.RunSimulations();
+		}
+	}
 	
 	return EXIT_SUCCESS;
 }

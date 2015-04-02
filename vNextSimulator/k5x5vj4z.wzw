@@ -6,7 +6,6 @@
 #include "SimulationManager.h"
 
 #include "DataSnap.h"
-#include "JSONSaver.h"
 
 #include "Simulator.h"
 
@@ -14,14 +13,14 @@
 #include "UniformNoiseRotation.h"
 #include "RectangularTransitionalBorders.h"
 
-template<size_t spDim>
+template<size_t spDim = 2UL>
 class CSimulationManager
 {
-	template<size_t spDim>
+	template<size_t spDim = spDim>
 	struct SSimulatorParams
 	{
 		double minNoise; double maxNoise; double noiseStep; double stepsWithCurrentNoise;
-		int particleCount; blaze::StaticVector<double, spDim> size; double particleVelocity;
+		int particleCount; double sizeX; double sizeY; double particleVelocity;
 		std::function<void(Simulator::CParticle<spDim>&, Simulator::CParticle<spDim>&)> ppInterract;
 		std::function<void(Simulator::CParticle<spDim>&)> pbInterract;
 		std::function<void(Simulator::CParticle<spDim>&, double)> noiseFunc;
@@ -29,9 +28,9 @@ class CSimulationManager
 		SSimulatorParams()
 		{
 			minNoise = 0; maxNoise = 360; noiseStep = 1;
-			particleCount = 1024; size = 32;
+			particleCount = 1024; sizeX = 32; sizeX = 32;
 			ppInterract = Simulator::CVicsecPPInterractor();
-			pbInterract = Simulator::CRectangularTransitionalBorders(size[0], size[1]);
+			pbInterract = Simulator::CRectangularTransitionalBorders(sizeX, sizeX);
 			noiseFunc = Simulator::CUniformNoiseRotation();
 		}
 	};
@@ -39,6 +38,7 @@ public:
 	std::string saveFileName = "AllDataFile.txt";
 
 	CSimulationManager() {};
+
 	CSimulationManager(int argc, const char **argv)
 	{
 		if (argc > 1)
@@ -66,7 +66,7 @@ public:
 						" | ";
 					if (m_Simulators[i].IsStable())
 					{
-						CJSONSaver::SaveAll(saveFileName, CDataSnap<spDim>(m_Simulators[i]));
+						CJSONSaver::SaveAll(saveFileName, CDataSnap(m_Simulators[i]));
 						m_Simulators[i].ChangeNoise(m_SimulatorParams[i].noiseStep);
 					}
 					else
@@ -112,7 +112,7 @@ private:
 
 		for (int i = 0; i < numOfSimulators; i++)
 		{
-			m_SimulatorParams.push_back(SSimulatorParams<spDim>());
+			m_SimulatorParams.push_back(SSimulatorParams<2UL>());
 		}
 
 		for (int i = 1; i < argv.size(); i++)
@@ -187,7 +187,7 @@ private:
 				int i = 0;
 				while (std::regex_search(group, subM, std::regex("(\\d{1,}[,.]?\\d{0,}) ")))
 				{
-					m_SimulatorParams[i++].size[0] = boost::lexical_cast<double>(subM[1].str());
+					m_SimulatorParams[i++].sizeX = boost::lexical_cast<double>(subM[1].str());
 					group = subM.suffix().str();
 				}
 				continue;
@@ -199,19 +199,7 @@ private:
 				int i = 0;
 				while (std::regex_search(group, subM, std::regex("(\\d{1,}[,.]?\\d{0,}) ")))
 				{
-					m_SimulatorParams[i++].size[1] = boost::lexical_cast<double>(subM[1].str());
-					group = subM.suffix().str();
-				}
-				continue;
-			}
-			if (std::regex_search(str, m, std::regex("--sizeZ=(.*)")))
-			{
-				auto group = m[1].str();
-				std::smatch subM;
-				int i = 0;
-				while (std::regex_search(group, subM, std::regex("(\\d{1,}[,.]?\\d{0,}) ")))
-				{
-					m_SimulatorParams[i++].size[2] = boost::lexical_cast<double>(subM[1].str());
+					m_SimulatorParams[i++].sizeY = boost::lexical_cast<double>(subM[1].str());
 					group = subM.suffix().str();
 				}
 				continue;
@@ -224,9 +212,10 @@ private:
 		std::cout << "Creating simulators" << std::endl;
 		for (int i = 0; i < m_SimulatorParams.size(); i++)
 		{
-			m_Simulators.push_back(Simulator::CSimulator<spDim>(
+			m_Simulators.push_back(Simulator::CSimulator<2UL>(
 				m_SimulatorParams[i].particleCount,
-				m_SimulatorParams[i].size,
+				m_SimulatorParams[i].sizeX,
+				m_SimulatorParams[i].sizeY,
 				m_SimulatorParams[i].ppInterract,
 				m_SimulatorParams[i].pbInterract,
 				m_SimulatorParams[i].noiseFunc,

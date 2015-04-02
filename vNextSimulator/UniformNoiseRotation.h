@@ -4,10 +4,10 @@ namespace Simulator
 {
 	class CUniformNoiseRotation
 	{
-		friend class CParticle;
 	public:
 		CUniformNoiseRotation();
-		void operator()(CParticle& a, double noise);
+		void operator()(CParticle<2UL>& a, double noise);
+		void operator()(CParticle<3UL>& a, double noise);
 		~CUniformNoiseRotation();
 	};
 }

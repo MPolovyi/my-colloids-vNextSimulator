@@ -23,6 +23,9 @@
     <Filter Include="Simulator\ParticleInterraction">
       <UniqueIdentifier>{96d431b4-d53d-4bd8-9232-6b58a88bb5b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Miscelaneous">
+      <UniqueIdentifier>{7e46ee5e-e131-42b4-8489-259cf1919bd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -44,9 +47,6 @@
     <ClInclude Include="DataSnap.h">
       <Filter>DataSave</Filter>
     </ClInclude>
-    <ClInclude Include="mtrand.h">
-      <Filter>Simulator\Noise</Filter>
-    </ClInclude>
     <ClInclude Include="UniformNoiseRotation.h">
       <Filter>Simulator\Noise</Filter>
     </ClInclude>
@@ -56,14 +56,14 @@
     <ClInclude Include="VicsecPPInterractor.h">
       <Filter>Simulator\ParticleInterraction</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleSaver.h">
-      <Filter>DataSave</Filter>
-    </ClInclude>
     <ClInclude Include="JSONSaver.h">
       <Filter>DataSave</Filter>
     </ClInclude>
     <ClInclude Include="SimulationManager.h">
       <Filter>Programm</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Miscelaneous</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -79,9 +79,6 @@
     <ClCompile Include="DataSnap.cpp">
       <Filter>DataSave</Filter>
     </ClCompile>
-    <ClCompile Include="mtrand.cpp">
-      <Filter>Simulator\Noise</Filter>
-    </ClCompile>
     <ClCompile Include="UniformNoiseRotation.cpp">
       <Filter>Simulator\Noise</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
     <ClCompile Include="VicsecPPInterractor.cpp">
       <Filter>Simulator\ParticleInterraction</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleSaver.cpp">
-      <Filter>DataSave</Filter>
-    </ClCompile>
     <ClCompile Include="vNextSimulator.cpp">
       <Filter>Programm</Filter>
     </ClCompile>
@@ -102,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="SimulationManager.cpp">
       <Filter>Programm</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Miscelaneous</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

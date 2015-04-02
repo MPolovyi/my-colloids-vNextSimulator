@@ -155,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JSONSaver.h" />
-    <ClInclude Include="SimpleSaver.h" />
     <ClInclude Include="SimulationManager.h" />
     <ClInclude Include="VicsecPPInterractor.h" />
     <ClInclude Include="DataSnap.h" />
@@ -169,7 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JSONSaver.cpp" />
-    <ClCompile Include="SimpleSaver.cpp" />
     <ClCompile Include="SimulationManager.cpp" />
     <ClCompile Include="VicsecPPInterractor.cpp" />
     <ClCompile Include="DataSnap.cpp" />

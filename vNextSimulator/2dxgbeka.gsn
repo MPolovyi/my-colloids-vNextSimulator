@@ -36,9 +36,9 @@ namespace Simulator
 		if (yCoord > m_Y)
 			particle.Coords[1] -= m_Y;
 		if (zCoord < 0)
-			particle.Coords[2] += m_Z;
+			particle.Coords[1] += m_Z;
 		if (zCoord > m_Z)
-			particle.Coords[2] -= m_Z;
+			particle.Coords[1] -= m_Z;
 	}
 
 	CRectangularTransitionalBorders::~CRectangularTransitionalBorders()
