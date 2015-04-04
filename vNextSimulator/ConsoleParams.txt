@@ -1,4 +1,4 @@
---borderConditions=[transitional, KuetteRefl, KuetteRough, KuetteDouble]
+--borderConditions=[transitional, kuette, kuetteRough, kuetteDouble]
 --numOfSimulators
 --numOfParticles
 --maxNoise

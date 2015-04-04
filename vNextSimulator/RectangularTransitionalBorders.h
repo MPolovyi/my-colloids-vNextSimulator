@@ -3,16 +3,30 @@
 
 namespace Simulator
 {
+	template<size_t spDim>
 	class CRectangularTransitionalBorders
 	{
 	public:
-		CRectangularTransitionalBorders(double x, double y, double z = 0);
-		void operator()(CParticle<2UL>& particle);
-		void operator()(CParticle<3UL>& particle);
-		~CRectangularTransitionalBorders();
-	private:
-		double m_X;
-		double m_Y;
-		double m_Z;
+		CRectangularTransitionalBorders(blaze::StaticVector<double, spDim> size) : m_size(size) {};
+
+		void ChangeSize(int index, double size)
+		{
+			m_size[index] = size;
+		};
+
+		void operator()(CParticle<spDim>& particle)
+		{
+			for (int i = 0; i < particle.Coords.size(); i++)
+			{
+				if (particle.Coords[i] < 0)
+					particle.Coords[i] += m_size[i];
+
+				if (particle.Coords[i] > m_size[i])
+					particle.Coords[i] -= m_size[i];
+			}
+		};
+		~CRectangularTransitionalBorders() {};
+	protected:
+		blaze::StaticVector<double, spDim> m_size;
 	};
 }

@@ -65,6 +65,15 @@
     <ClInclude Include="mtrand.h">
       <Filter>Miscelaneous</Filter>
     </ClInclude>
+    <ClInclude Include="RectangularKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularTwoSidedKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularRoughKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -99,6 +108,15 @@
     </ClCompile>
     <ClCompile Include="mtrand.cpp">
       <Filter>Miscelaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularTwoSidedKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularRoughKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -155,6 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JSONSaver.h" />
+    <ClInclude Include="RectangularKuetteBorders.h" />
+    <ClInclude Include="RectangularRoughKuetteBorders.h" />
+    <ClInclude Include="RectangularTwoSidedKuetteBorders.h" />
     <ClInclude Include="SimulationManager.h" />
     <ClInclude Include="VicsecPPInterractor.h" />
     <ClInclude Include="DataSnap.h" />
@@ -168,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JSONSaver.cpp" />
+    <ClCompile Include="RectangularKuetteBorders.cpp" />
+    <ClCompile Include="RectangularRoughKuetteBorders.cpp" />
+    <ClCompile Include="RectangularTwoSidedKuetteBorders.cpp" />
     <ClCompile Include="SimulationManager.cpp" />
     <ClCompile Include="VicsecPPInterractor.cpp" />
     <ClCompile Include="DataSnap.cpp" />
