@@ -3,81 +3,53 @@
 
 #include <regex>
 #include "boost\lexical_cast.hpp"
-#include "SimulationManager.h"
 
 #include "DataSnap.h"
 #include "JSONSaver.h"
 
 #include "Simulator.h"
 
-#include "VicsecPPInterractor.h"
-#include "UniformNoiseRotation.h"
-#include "RectangularTransitionalBorders.h"
-#include "RectangularRoughKuetteBorders.h"
-#include "RectangularKuetteBorders.h"
-#include "RectangularTwoSidedKuetteBorders.h"
-
 template<size_t spDim>
 class CSimulationManager
 {
-	enum EBorderConditions
-	{
-		RectangularTransitionalBC,
-		RectangularKuetteBC,
-		RectangularRoughKuetteBC,
-		RectangularTwoSidedKuetteBC
-	};
-
-	enum EParticleInterractions
-	{
-		VicsekInt
-	};
-
-	enum EParticleNoise
-	{
-		UniformRandomRotation
-	};
-
 	template<size_t spDim>
 	class CSimulatorParams
 	{
 	public:
-		double minNoise; double maxNoise; double noiseStep;
+		double minNoise; double maxNoise; double noiseStep; int maxSteps;
 		int particleCount; blaze::StaticVector<double, spDim> size; double particleVelocity;
-		EBorderConditions bCond;
-		std::function<void(Simulator::CParticle<spDim>&)> pbInterract;
-		EParticleInterractions ppInt;
-		std::function<void(Simulator::CParticle<spDim>&, Simulator::CParticle<spDim>&)> ppInterract;
-		EParticleNoise ptNoise;
-		std::function<void(Simulator::CParticle<spDim>&, double)> noiseFunc;
+		Simulator::EBorderConditions bCond;
+		Simulator::EParticleInterractions ppInt;
+		Simulator::EParticleNoise ptNoise;
+		Simulator::EStabilityChecker stCheck;
 
 		CSimulatorParams(double _minNoise, double _maxNoise, double _noiseStep,
 			int _particleCount, blaze::StaticVector<double, spDim> _size, double _particleVelocity,
-			std::function<void(Simulator::CParticle<spDim>&, Simulator::CParticle<spDim>&)> _ppInterract,
-			std::function<void(Simulator::CParticle<spDim>&)> _pbInterract,
-			std::function<void(Simulator::CParticle<spDim>&, double)> _noiseFunc)
+			Simulator::EBorderConditions _bCond,
+			Simulator::EParticleInterractions _ppInt,
+			Simulator::EParticleNoise _ptNoise,
+			Simulator::EStabilityChecker _stCheck,
+			int _maxSteps)
 		{
 			minNoise = _minNoise;
 			maxNoise = _maxNoise;
 			noiseStep = _noiseStep;
 			particleCount = _particleCount;
 			size = _size;
-			ppInterract = _ppInterract;
-			pbInterract = _pbInterract;
-			noiseFunc = _noiseFunc;
+			bCond = _bCond;
+			ppInt = _ppInt;
+			ptNoise = _ptNoise;
+			stCheck = _stCheck;
+			maxSteps = _maxSteps;
 		};
 
 		static CSimulatorParams GetDefault()
 		{
-			auto tmp = CSimulatorParams(0, 360, 1, 1024, blaze::StaticVector<double, spDim>(32), 1,
-				Simulator::CVicsecPPInterractor(),
-				Simulator::CRectangularTransitionalBorders<spDim>(blaze::StaticVector<double, spDim>(32)),
-				Simulator::CUniformNoiseRotation());
-
-			tmp.bCond = RectangularTransitionalBC;
-			tmp.ppInt = VicsekInt;
-			tmp.ptNoise = UniformRandomRotation;
-			return tmp;
+			return CSimulatorParams(0, 360, 1, 1024, blaze::StaticVector<double, spDim>(32), 1,
+						Simulator::EBorderConditions::RectangularKuetteBC,
+						Simulator::EParticleInterractions::VicsekInt,
+						Simulator::EParticleNoise::UniformRandomRotation,
+						Simulator::EStabilityChecker::NumOfSteps, 500);
 		}
 	};
 
@@ -87,10 +59,10 @@ public:
 	CSimulationManager() {};
 	CSimulationManager(int argc, const char **argv)
 	{
-		if (argc > 1)
-			CreateParams(PrepareParams(argc, argv));
+		CreateParams(PrepareParams(argc, argv));
 		Init();
 	};
+
 	void RunSimulations()
 	{
 		int notExit = 1;
@@ -106,7 +78,7 @@ public:
 				{
 					notExit++;
 					std::cout << " S." << i << " St." << m_Simulators[i].Steps <<
-						" N" << m_SimulatorParams[i].minNoise << "<" << m_Simulators[i].GetNoise() << "<" << m_SimulatorParams[i].maxNoise <<
+						" N." << m_SimulatorParams[i].minNoise << "<" << m_Simulators[i].GetNoise() << "<" << m_SimulatorParams[i].maxNoise <<
 						" | ";
 					if (m_Simulators[i].IsStable())
 					{
@@ -132,7 +104,7 @@ private:
 	std::vector<std::string> PrepareParams(int argc, const char **argv)
 	{
 		std::vector<std::string> ret;
-		for (int i = 1; i < argc; i++)
+		for (int i = 0; i < argc; i++)
 		{
 			std::string str(argv[i]);
 			str += " ";
@@ -141,20 +113,16 @@ private:
 			else
 				ret[ret.size() - 1] += str;
 		}
+		for (auto& str : ret)
+		{
+			std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+		}
 		return ret;
 	};
 
 	void CreateParams(std::vector<std::string> argv)
 	{
 		std::cout << "Reading parameters" << std::endl;
-
-		std::string str(argv[0]);
-		std::smatch m;
-		if (str.find("--numOfSimulators") != std::string::npos)
-		{
-			std::regex_search(str, m, std::regex("--numOfSimulators=(\\d{1,})"));
-			m_NumOfSimulators = boost::lexical_cast<int>(m[1].str());
-		}
 
 		std::vector<double> minNoises;
 		std::vector<double> maxNoises;
@@ -165,19 +133,79 @@ private:
 		std::vector<double> sizesY;
 		std::vector<double> sizesZ;
 		std::vector<blaze::StaticVector<double, spDim>> sizes;
-		std::vector<EBorderConditions> bCond;
-		std::vector<std::function<void(Simulator::CParticle<spDim>&)>> bcFunctions;
-		std::vector<EParticleInterractions> ppInt;
-		std::vector<std::function<void(Simulator::CParticle<spDim>&, Simulator::CParticle<spDim>&)>> ppIntFunctions;
-		std::vector<EParticleNoise> ptNoise;
-		std::vector<std::function<void(Simulator::CParticle<spDim>&, double)>> noiseFunctions;
+		std::vector<Simulator::EBorderConditions> bCond;
+		std::vector<Simulator::EParticleInterractions> ppInt;
+		std::vector<Simulator::EParticleNoise> ptNoise;
+		std::vector<Simulator::EStabilityChecker> stCheck;
+		std::vector<int> maxSteps;
 
-		for (int i = 1; i < argv.size(); i++)
+		InterpreteConsoleParameters(argv,
+			minNoises,
+			maxNoises,
+			noiseSteps,
+			particleVelocities,
+			particleCounts,
+			sizesX,
+			sizesY,
+			sizesZ,
+			sizes,
+			bCond,
+			ppInt,
+			ptNoise,
+			stCheck,
+			maxSteps);
+
+		FillWithDefaults(minNoises,
+			maxNoises,
+			noiseSteps,
+			particleVelocities,
+			particleCounts,
+			sizesX,
+			sizesY,
+			sizesZ,
+			sizes,
+			bCond,
+			ppInt,
+			ptNoise,
+			stCheck,
+			maxSteps);
+		
+		for (int i = 0; i < m_NumOfSimulators; i++)
+		{
+			m_SimulatorParams.push_back(CSimulatorParams<spDim>(minNoises[i], maxNoises[i], noiseSteps[i],
+				particleCounts[i], sizes[i], particleVelocities[i], bCond[i], ppInt[i], ptNoise[i], stCheck[i],
+				maxSteps[i]));
+		}
+	};
+
+	void InterpreteConsoleParameters(
+		std::vector<std::string>& argv,
+		std::vector<double>& minNoises,
+		std::vector<double>& maxNoises,
+		std::vector<double>& noiseSteps,
+		std::vector<double>& particleVelocities,
+		std::vector<int>& particleCounts,
+		std::vector<double>& sizesX,
+		std::vector<double>& sizesY,
+		std::vector<double>& sizesZ,
+		std::vector<blaze::StaticVector<double, spDim>>& sizes,
+		std::vector<Simulator::EBorderConditions>& bCond,
+		std::vector<Simulator::EParticleInterractions>& ppInt,
+		std::vector<Simulator::EParticleNoise>& ptNoise,
+		std::vector<Simulator::EStabilityChecker>& stCheck,
+		std::vector<int>& maxSteps)
+	{
+		for (int i = 0; i < argv.size(); i++)
 		{
 			std::string str(argv[i]);
 			std::smatch m;
 
-			if (std::regex_search(str, m, std::regex("--numOfParticles=(.*)")))
+			if (str.find("--numofsimulators") != std::string::npos)
+			{
+				std::regex_search(str, m, std::regex("--numofsimulators=(\\d{1,})"));
+				m_NumOfSimulators = boost::lexical_cast<int>(m[1].str());
+			}
+			if (std::regex_search(str, m, std::regex("--numofparticles=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -189,7 +217,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--maxNoise=(.*)")))
+			if (std::regex_search(str, m, std::regex("--maxnoise=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -201,7 +229,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--minNoise=(.*)")))
+			if (std::regex_search(str, m, std::regex("--minnoise=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -213,7 +241,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--noiseStep=(.*)")))
+			if (std::regex_search(str, m, std::regex("--noisestep=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -225,7 +253,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--particleVelocity=(.*)")))
+			if (std::regex_search(str, m, std::regex("--particlevelocity=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -237,7 +265,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--sizeX=(.*)")))
+			if (std::regex_search(str, m, std::regex("--sizex=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -249,7 +277,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--sizeY=(.*)")))
+			if (std::regex_search(str, m, std::regex("--sizey=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -261,7 +289,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--sizeZ=(.*)")))
+			if (std::regex_search(str, m, std::regex("--sizez=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -273,7 +301,7 @@ private:
 				}
 				continue;
 			}
-			if (std::regex_search(str, m, std::regex("--borderConditions=(.*)")))
+			if (std::regex_search(str, m, std::regex("--borderconditions=(.*)")))
 			{
 				auto group = m[1].str();
 				std::smatch subM;
@@ -281,20 +309,63 @@ private:
 				while (std::regex_search(group, subM, std::regex("(.*) ")))
 				{
 					if (subM[1] == "transitional")
-						bCond.push_back(RectangularTransitionalBC);
+						bCond.push_back(Simulator::EBorderConditions::RectangularTransitionalBC);
 					if (subM[1] == "kuette")
-						bCond.push_back(RectangularKuetteBC);
-					if (subM[1] == "kuetteRough")
-						bCond.push_back(RectangularRoughKuetteBC);
-					if (subM[1] == "kuetteDouble")
-						bCond.push_back(RectangularTwoSidedKuetteBC);
+						bCond.push_back(Simulator::EBorderConditions::RectangularKuetteBC);
+					if (subM[1] == "kuetterough")
+						bCond.push_back(Simulator::EBorderConditions::RectangularRoughKuetteBC);
+					if (subM[1] == "kuettedouble")
+						bCond.push_back(Simulator::EBorderConditions::RectangularTwoSidedKuetteBC);
+					group = subM.suffix().str();
+				}
+				continue;
+			}
+			if (std::regex_search(str, m, std::regex("--stabilitycheck=(.*)")))
+			{
+				auto group = m[1].str();
+				std::smatch subM;
+				int i = 0;
+				while (std::regex_search(group, subM, std::regex("(.*) ")))
+				{
+					if (subM[1] == "maxsteps")
+						stCheck.push_back(Simulator::EStabilityChecker::NumOfSteps);
+					if (subM[1] == "averagevelocity")
+						stCheck.push_back(Simulator::EStabilityChecker::AverageVelocity);
+					if (subM[1] == "avveldispersionx")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispersionX);
+					if (subM[1] == "avveldispersiony")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispersionY);
+					if (subM[1] == "avveldispersionz")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispersionZ);
+					if (subM[1] == "avveldispersionxy")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispersionXY);
+					if (subM[1] == "avveldispersionyz")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispresionYZ);
+					if (subM[1] == "avveldispersionxyz")
+						stCheck.push_back(Simulator::EStabilityChecker::AvVelDispersionXYZ);
+
 					group = subM.suffix().str();
 				}
 				continue;
 			}
 		}
+	};
 
-		//!!!!!!!!!!!!!!!!!! end FOR
+	void FillWithDefaults(std::vector<double>& minNoises,
+		std::vector<double>& maxNoises,
+		std::vector<double>& noiseSteps,
+		std::vector<double>& particleVelocities,
+		std::vector<int>& particleCounts,
+		std::vector<double>& sizesX,
+		std::vector<double>& sizesY,
+		std::vector<double>& sizesZ,
+		std::vector<blaze::StaticVector<double, spDim>>& sizes,
+		std::vector<Simulator::EBorderConditions>& bCond,
+		std::vector<Simulator::EParticleInterractions>& ppInt,
+		std::vector<Simulator::EParticleNoise>& ptNoise,
+		std::vector<Simulator::EStabilityChecker>& stCheck,
+		std::vector<int>& maxSteps)
+	{
 		CSimulatorParams<spDim> def = CSimulatorParams<spDim>::GetDefault();
 		if (minNoises.size() == 0)
 			minNoises.push_back(def.minNoise);
@@ -322,85 +393,31 @@ private:
 			particleCounts.push_back(particleCounts[0]);
 
 		CreateSizes(sizesX, sizesY, sizesZ, sizes, def);
-		CreateBorderConditionFunctions(bCond, bcFunctions, sizes, def);
-		CreatePPIntFunctions(ppInt, ppIntFunctions, def);
-		CreateNoiseFunctions(ptNoise, noiseFunctions, def);
-	};
 
-	void CreateBorderConditionFunctions(std::vector<EBorderConditions>& bCond,
-		std::vector<std::function<void(Simulator::CParticle<spDim>&)>>& bcFunctions,
-		std::vector<blaze::StaticVector<double, spDim>>& sizes,
-		CSimulatorParams<spDim>& def)
-	{
 		if (bCond.size() == 0)
 			bCond.push_back(def.bCond);
 		for (int i = bCond.size(); i < m_NumOfSimulators; i++)
 			bCond.push_back(bCond[0]);
 
-		for (int i = 0; i < bCond.size(); i++)
-		{
-			switch (bCond[i])
-			{
-			case RectangularTransitionalBC:
-				bcFunctions.push_back(Simulator::CRectangularTransitionalBorders<spDim>(sizes[i]));
-				break;
-			case RectangularKuetteBC:
-				bcFunctions.push_back(Simulator::CRectangularKuetteBorders<spDim>(sizes[i]));
-					break;
-			case RectangularRoughKuetteBC:
-				//bcFunctions.push_back(Simulator::CRectangularRoughKuetteBorders<spDim>(sizes[i]));
-					break;
-			case RectangularTwoSidedKuetteBC:
-				bcFunctions.push_back(Simulator::CRectangularTwoSidedKuetteBorders<spDim>(sizes[i]));
-				break;
-			default:
-				std::cout << "Unknown border condition parameter" << std::endl;
-				break;
-			}
-		}
-	}
-
-	void CreatePPIntFunctions(std::vector<EParticleInterractions>& ppInt,
-		std::vector<std::function<void(Simulator::CParticle<spDim>&, Simulator::CParticle<spDim>&)>> &ppIntFunctions,
-		CSimulatorParams<spDim>& def)
-	{
 		if (ppInt.size() == 0)
 			ppInt.push_back(def.ppInt);
 		for (int i = ppInt.size(); i < m_NumOfSimulators; i++)
 			ppInt.push_back(ppInt[0]);
 
-		for (int i = 0; i < ppInt.size(); i++)
-		{
-			switch (ppInt[i])
-			{
-			case VicsekInt:
-				ppIntFunctions.push_back(Simulator::CVicsecPPInterractor());
-			default:
-				std::cout << "Unknown particle-particle interraction parameter" << std::endl;
-				break;
-			}
-		}
-	}
-	
-	void CreateNoiseFunctions(std::vector<EParticleNoise>& ptNoise,
-		std::vector<std::function<void(Simulator::CParticle<spDim>&, double)>> &noiseFunctions,
-		CSimulatorParams<spDim>& def)
-	{
 		if (ptNoise.size() == 0)
 			ptNoise.push_back(def.ptNoise);
 		for (int i = ptNoise.size(); i < m_NumOfSimulators; i++)
 			ptNoise.push_back(ptNoise[0]);
 
-		for (int i = 0; i < ptNoise.size(); i++)
-		{
-			switch (ptNoise[i])
-			{
-			case UniformRandomRotation:
-				noiseFunctions.push_back(Simulator::CUniformNoiseRotation());
-			default:
-				break;
-			}
-		}
+		if (stCheck.size() == 0)
+			stCheck.push_back(def.stCheck);
+		for (int i = stCheck.size(); i < m_NumOfSimulators; i++)
+			stCheck.push_back(stCheck[0]);
+
+		if (maxSteps.size() == 0)
+			maxSteps.push_back(def.maxSteps);
+		for (int i = maxSteps.size(); i < m_NumOfSimulators; i++)
+			maxSteps.push_back(maxSteps[0]);
 	}
 
 	void CreateSizes(std::vector<double>& sX,
@@ -455,12 +472,19 @@ private:
 			m_Simulators.push_back(Simulator::CSimulator<spDim>(
 				m_SimulatorParams[i].particleCount,
 				m_SimulatorParams[i].size,
-				m_SimulatorParams[i].ppInterract,
-				m_SimulatorParams[i].pbInterract,
-				m_SimulatorParams[i].noiseFunc,
+				m_SimulatorParams[i].ppInt,
+				m_SimulatorParams[i].bCond,
+				m_SimulatorParams[i].ptNoise,
+				m_SimulatorParams[i].stCheck,
+				m_SimulatorParams[i].maxSteps,
 				m_SimulatorParams[i].noiseStep > 0 ? m_SimulatorParams[i].minNoise : m_SimulatorParams[i].maxNoise
 				));
 		}
+		if (m_Simulators.size() == 0)
+		{
+			std::cout << "Creating defaults" << std::endl;
+		}
+		std::cout << "Initialisation finished" << std::endl;
 	};
 };
 

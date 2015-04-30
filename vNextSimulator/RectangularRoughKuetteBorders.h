@@ -11,10 +11,16 @@ namespace Simulator
 		CRectangularRoughKuetteBorders(blaze::StaticVector<double, spDim> size, double velocity = 1.0)
 			: CRectangularKuetteBorders(size, velocity)
 		{
-			CRectangularRoughKuetteBorders();
+			GUID guid;
+			CoCreateGuid(&guid);
+			for (int i = 0; i < 8; i++)
+			{
+				m_rndSeed[i] = guid.Data4[i];
+			}
+			rndGen.seed(m_rndSeed, 8);
 		};
 
-		CRectangularRoughKuetteBorders(const CRectangularRoughKuetteBorders& rhs)
+		CRectangularRoughKuetteBorders(const CRectangularRoughKuetteBorders& rhs) : CRectangularKuetteBorders(rhs)
 		{
 			rndGen.seed(rhs.m_rndSeed, 8);
 			Velocity = rhs.Velocity;
@@ -91,16 +97,6 @@ namespace Simulator
 		};
 		~CRectangularRoughKuetteBorders() {};
 	private:
-		CRectangularRoughKuetteBorders()
-		{
-			GUID guid;
-			CoCreateGuid(&guid);
-			for (int i = 0; i < 8; i++)
-			{
-				m_rndSeed[i] = guid.Data4[i];
-			}
-			rndGen.seed(m_rndSeed, 8);
-		}
 		unsigned long m_rndSeed[8];
 		MTRand rndGen;
 	};

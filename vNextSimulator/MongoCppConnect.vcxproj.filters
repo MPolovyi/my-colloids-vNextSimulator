@@ -26,6 +26,9 @@
     <Filter Include="Miscelaneous">
       <UniqueIdentifier>{7e46ee5e-e131-42b4-8489-259cf1919bd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Simulator\StabilityCheck">
+      <UniqueIdentifier>{a0fd25ac-5263-4a2c-ab0b-2fc96ade95fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -74,6 +77,10 @@
     <ClInclude Include="RectangularRoughKuetteBorders.h">
       <Filter>Simulator\BorderConditions</Filter>
     </ClInclude>
+    <ClInclude Include="MaxStepsStabilityChecker.h">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,5 +125,9 @@
     <ClCompile Include="RectangularRoughKuetteBorders.cpp">
       <Filter>Simulator\BorderConditions</Filter>
     </ClCompile>
+    <ClCompile Include="MaxStepsStabilityChecker.cpp">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
 </Project>

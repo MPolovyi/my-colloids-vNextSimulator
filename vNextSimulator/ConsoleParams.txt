@@ -1,4 +1,12 @@
 --borderConditions=[transitional, kuette, kuetteRough, kuetteDouble]
+--stabilityCheck=[maxSteps, 
+					averageVelocity, 
+					avVelDispersionX, 
+					avVelDispersionY, 
+					avVelDispersionZ, 
+					avVelDispersionXY, 
+					avVelDispersionYZ, 
+					avVelDispersionXYZ]
 --numOfSimulators
 --numOfParticles
 --maxNoise

@@ -36,12 +36,27 @@ private:
 			wr.String(data.simGuid.c_str());
 			wr.String("ParticleCount");
 			wr.Int(data.ParticleCount);
+			wr.String("SimSize");
+			wr.StartArray();
+			{
+				for (auto& e : data.Extents)
+					wr.Double(e);
+			}
+			wr.EndArray();
 			wr.String("ParticleVelocity");
 			wr.Double(data.ParticleVelocity);
 			wr.String("Noise");
 			wr.Double(data.Noise);
 			wr.String("SimulationSteps");
 			wr.Int(data.stepsFromStart);
+			wr.String("BorderConditions");
+			wr.String(data.BorderConditions.c_str());
+			wr.String("ParticleInterractions");
+			wr.String(data.ParticleInterractions.c_str());
+			wr.String("NoiseFunction");
+			wr.String(data.NoiseFunction.c_str());
+			wr.String("SystemStabilityCheck");
+			wr.String(data.StabilityChecker.c_str());
 
 			wr.String("PreviousSimulations");
 			wr.StartArray();
@@ -123,13 +138,11 @@ private:
 				wr.String("Velocity");
 				wr.StartArray();
 				for (auto d : std::get<2>(vData))
-					wr.Double(d);
+					wr.Double(std::get<3>(vData) > 0.0 ? d : 0.0);
 				wr.EndArray();
 
 				wr.String("LocalParticleCount");
-				wr.StartArray();
-				wr.Double(std::get<3>(vData));
-				wr.EndArray();
+				wr.Int(std::get<3>(vData));
 				wr.EndObject();
 			}
 		}
@@ -158,14 +171,10 @@ private:
 				wr.EndArray();
 
 				wr.String("Dencity");
-				wr.StartArray();
 				wr.Double(std::get<2>(vData));
-				wr.EndArray();
 
 				wr.String("LocalParticleCount");
-				wr.StartArray();
-				wr.Double(std::get<3>(vData));
-				wr.EndArray();
+				wr.Int(std::get<3>(vData));
 				wr.EndObject();
 			}
 		}

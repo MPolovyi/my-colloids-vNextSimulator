@@ -10,8 +10,6 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
-
 // TODO: reference additional headers your program requires here
 #include <iostream>
 #include <fstream>
@@ -26,3 +24,4 @@
 #include "rapidjson\document.h"
 #include "rapidjson\prettywriter.h"
 #include "rapidjson\filewritestream.h"
+

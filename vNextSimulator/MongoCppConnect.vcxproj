@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 15.0</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 15.0</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 15.0</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 15.0</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -109,6 +109,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /B $(TargetPath) $(SolutionDir)\SimulatorGUI\bin\Debug\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,7 +122,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\include;D:\UserData\Programming\Utilities\boost_1_57_0\;D:\UserData\Programming\Utilities\blaze-2.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\boost_1_57_0\;D:\UserData\Programming\Utilities\blaze-2.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,6 +151,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /B $(TargetPath) $(SolutionDir)\SimulatorGUI\bin\Debug\
+;copy /B $(TargetPath) $(SolutionDir)\SimulatorGUI\bin\Release\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ConsoleParams.txt" />
@@ -155,10 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JSONSaver.h" />
+    <ClInclude Include="MaxStepsStabilityChecker.h" />
     <ClInclude Include="RectangularKuetteBorders.h" />
     <ClInclude Include="RectangularRoughKuetteBorders.h" />
     <ClInclude Include="RectangularTwoSidedKuetteBorders.h" />
     <ClInclude Include="SimulationManager.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="VicsecPPInterractor.h" />
     <ClInclude Include="DataSnap.h" />
     <ClInclude Include="mtrand.h" />
@@ -171,10 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JSONSaver.cpp" />
+    <ClCompile Include="MaxStepsStabilityChecker.cpp" />
     <ClCompile Include="RectangularKuetteBorders.cpp" />
     <ClCompile Include="RectangularRoughKuetteBorders.cpp" />
     <ClCompile Include="RectangularTwoSidedKuetteBorders.cpp" />
     <ClCompile Include="SimulationManager.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VicsecPPInterractor.cpp" />
     <ClCompile Include="DataSnap.cpp" />
     <ClCompile Include="vNextSimulator.cpp" />

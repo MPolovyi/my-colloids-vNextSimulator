@@ -5,8 +5,8 @@
 template<size_t spDim>
 class CDataSnap
 {
-	typedef std::tuple<blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, double> Coord_AreaExtent_Velocity_NumParticles;
-	typedef std::tuple<blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, double, double> Coord_AreaExtent_Dencity_NumParticles;
+	typedef std::tuple<blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, int> Coord_AreaExtent_Velocity_NumParticles;
+	typedef std::tuple<blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>, double, int> Coord_AreaExtent_Dencity_NumParticles;
 public:
 	template<size_t spDim>
 	CDataSnap(Simulator::CSimulator<spDim>& s)
@@ -23,7 +23,12 @@ public:
 	double ParticleVelocity;
 	int stepsFromStart;
 	double Noise;
+	blaze::StaticVector<double, spDim> Extents;
 	std::string simGuid;
+	std::string BorderConditions;
+	std::string ParticleInterractions;
+	std::string NoiseFunction;
+	std::string StabilityChecker;
 
 	//Previous noise, Steps with previous noises
 	std::vector<std::pair<double, int>> PreviousSimulations;
@@ -42,9 +47,14 @@ public:
 		simGuid = s.Guid;
 		stepsFromStart = s.Steps;
 		Noise = s.GetNoise();
+		Extents = s.Extents;
 		PreviousSimulations = std::vector<std::pair<double, int>>(s.PreviousNoises.begin(), s.PreviousNoises.end());
 		ParticleCount = s.GetParticleCount();
 		ParticleVelocity = s.GetParticleVelocity();
+		ParticleInterractions = s.ParticleInterractions;
+		NoiseFunction = s.NoiseFunction;
+		BorderConditions = s.BorderConditions;
+		StabilityChecker = s.StabilityChecker;
 	};
 	template<size_t spDim> void SaveParticleData(Simulator::CSimulator<spDim>& s)
 	{
