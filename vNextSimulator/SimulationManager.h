@@ -35,6 +35,7 @@ class CSimulationManager
 			maxNoise = _maxNoise;
 			noiseStep = _noiseStep;
 			particleCount = _particleCount;
+			particleVelocity = _particleVelocity;
 			size = _size;
 			bCond = _bCond;
 			ppInt = _ppInt;
@@ -46,9 +47,9 @@ class CSimulationManager
 		static CSimulatorParams GetDefault()
 		{
 			return CSimulatorParams(0, 360, 1, 1024, blaze::StaticVector<double, spDim>(32), 1,
-						Simulator::EBorderConditions::RectangularKuetteBC,
+						Simulator::EBorderConditions::RectangularTransitionalBC,
 						Simulator::EParticleInterractions::VicsekInt,
-						Simulator::EParticleNoise::UniformRandomRotation,
+						Simulator::EParticleNoise::UniformNoiseRotation,
 						Simulator::EStabilityChecker::NumOfSteps, 500);
 		}
 	};
@@ -472,6 +473,7 @@ private:
 			m_Simulators.push_back(Simulator::CSimulator<spDim>(
 				m_SimulatorParams[i].particleCount,
 				m_SimulatorParams[i].size,
+				m_SimulatorParams[i].particleVelocity,
 				m_SimulatorParams[i].ppInt,
 				m_SimulatorParams[i].bCond,
 				m_SimulatorParams[i].ptNoise,

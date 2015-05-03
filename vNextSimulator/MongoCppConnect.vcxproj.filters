@@ -80,7 +80,15 @@
     <ClInclude Include="MaxStepsStabilityChecker.h">
       <Filter>Simulator\StabilityCheck</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="RectangularHorisontalTransitionBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="BorderConditions.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="StabilityCheckers.h">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -128,6 +136,8 @@
     <ClCompile Include="MaxStepsStabilityChecker.cpp">
       <Filter>Simulator\StabilityCheck</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="RectangularHorisontalTransitionBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -7,7 +7,8 @@ namespace Simulator
 	class CMaxStepsStabilityChecker
 	{
 	public:
-		bool operator()(std::vector<CParticle<spDim>>& particles)
+		CMaxStepsStabilityChecker(int maxSteps) { m_MaxSteps = maxSteps; };
+		virtual bool operator()(std::vector<CParticle<spDim>>& particles)
 		{
 			if (++m_CycleSteps > m_MaxSteps)
 			{
@@ -17,9 +18,8 @@ namespace Simulator
 			else
 				return false;
 		}
-		CMaxStepsStabilityChecker(int maxSteps) { m_MaxSteps = maxSteps; };
-		~CMaxStepsStabilityChecker() {};
-	private:
+		virtual ~CMaxStepsStabilityChecker() {};
+	protected:
 		int m_CycleSteps = 0;
 		int m_MaxSteps;
 	};

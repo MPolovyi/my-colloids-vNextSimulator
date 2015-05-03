@@ -14,7 +14,21 @@ namespace Simulator
 			m_size[index] = size;
 		};
 
-		void operator()(CParticle<spDim>& particle)
+		virtual void operator()(CParticle<2UL>& particle)
+		{
+			ParticleInt(particle);
+		};
+		virtual void operator()(CParticle<3UL>& particle)
+		{
+			ParticleInt(particle);
+		};
+		virtual ~CRectangularTransitionalBorders() {};
+	protected:
+		blaze::StaticVector<double, spDim> m_size;
+
+	private:
+		template<size_t ptDim>
+		void ParticleInt(CParticle<ptDim>& particle)
 		{
 			for (int i = 0; i < particle.Coords.size(); i++)
 			{
@@ -24,9 +38,6 @@ namespace Simulator
 				if (particle.Coords[i] > m_size[i])
 					particle.Coords[i] -= m_size[i];
 			}
-		};
-		~CRectangularTransitionalBorders() {};
-	protected:
-		blaze::StaticVector<double, spDim> m_size;
+		}
 	};
 }

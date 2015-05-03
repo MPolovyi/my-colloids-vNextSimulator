@@ -10,12 +10,8 @@
 
 #include "UniformNoiseRotation.h"
 
-#include "RectangularTransitionalBorders.h"
-#include "RectangularRoughKuetteBorders.h"
-#include "RectangularKuetteBorders.h"
-#include "RectangularTwoSidedKuetteBorders.h"
-
-#include "MaxStepsStabilityChecker.h"
+#include "BorderConditions.h"
+#include "StabilityCheckers.h"
 
 
 namespace Simulator
@@ -35,7 +31,7 @@ namespace Simulator
 
 	enum EParticleNoise
 	{
-		UniformRandomRotation
+		UniformNoiseRotation
 	};
 
 	enum EStabilityChecker
@@ -66,7 +62,7 @@ namespace Simulator
 		//Previous noise, Steps with previous noises
 		std::vector<std::pair<double, int>> PreviousNoises;
 
-		CSimulator(int particleCount, blaze::StaticVector<double, spDim> extents,
+		CSimulator(int particleCount, blaze::StaticVector<double, spDim> extents, double ptVelocity,
 			EParticleInterractions ppInterract,
 			EBorderConditions pbInterract,
 			EParticleNoise noiseFunc,
@@ -83,6 +79,7 @@ namespace Simulator
 				m_ParticlesNew.push_back(CParticle<spDim>(ptIndexShufle + i, extents));
 			}
 
+			m_ParticleVelocity = ptVelocity;
 			Extents = extents;
 
 			m_ParticleParticleInterract = CreatePPIntFunction(ppInterract);
@@ -115,9 +112,11 @@ namespace Simulator
 				}
 			});
 
+
 			concurrency::parallel_for(0, m_ParticleCount, [&](int i) {
 				m_ParticlesNew[i].Velocity = blaze::normalize(m_ParticlesNew[i].Velocity);
 				m_ParticlesNew[i].Coords += m_ParticlesNew[i].Velocity * m_ParticleVelocity;
+
 				m_ParticleBorderInterract(m_ParticlesNew[i]);
 				m_NoiseFunction(m_ParticlesNew[i], m_Noise);
 			});
@@ -188,8 +187,8 @@ namespace Simulator
 					break;
 				default:
 					BorderConditions = "RectangularTransitionalBC";
-					return Simulator::CRectangularTransitionalBorders<spDim>(Extents);
 					std::cout << "Unknown border condition parameter" << std::endl;
+					return Simulator::CRectangularTransitionalBorders<spDim>(Extents);
 					break;
 				}
 			};
@@ -215,7 +214,7 @@ namespace Simulator
 		{
 				switch (ptNoise)
 				{
-				case UniformRandomRotation:
+				case UniformNoiseRotation:
 					NoiseFunction = "UniformRandomRotation";
 					return Simulator::CUniformNoiseRotation();
 				default:
