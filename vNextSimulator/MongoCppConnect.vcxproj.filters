@@ -89,6 +89,7 @@
     <ClInclude Include="StabilityCheckers.h">
       <Filter>Simulator\StabilityCheck</Filter>
     </ClInclude>
+    <ClInclude Include="AverageVelocityStabilityChecker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,5 +140,6 @@
     <ClCompile Include="RectangularHorisontalTransitionBorders.cpp">
       <Filter>Simulator\BorderConditions</Filter>
     </ClCompile>
+    <ClCompile Include="AverageVelocityStabilityChecker.cpp" />
   </ItemGroup>
 </Project>

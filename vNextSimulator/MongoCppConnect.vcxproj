@@ -101,7 +101,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Intel\Composer XE 2015\tbb\include;D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm200</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -141,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Intel\Composer XE 2015\tbb\include;D:\UserData\Programming\Rapidjson\include;D:\UserData\Programming\Utilities\blaze-2.2;D:\UserData\Programming\Utilities\boost_1_57_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm200</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -161,6 +161,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AverageVelocityStabilityChecker.h" />
     <ClInclude Include="BorderConditions.h" />
     <ClInclude Include="JSONSaver.h" />
     <ClInclude Include="MaxStepsStabilityChecker.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AverageVelocityStabilityChecker.cpp" />
     <ClCompile Include="JSONSaver.cpp" />
     <ClCompile Include="MaxStepsStabilityChecker.cpp" />
     <ClCompile Include="RectangularHorisontalTransitionBorders.cpp" />

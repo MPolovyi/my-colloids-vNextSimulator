@@ -112,7 +112,6 @@ namespace Simulator
 				}
 			});
 
-
 			concurrency::parallel_for(0, m_ParticleCount, [&](int i) {
 				m_ParticlesNew[i].Velocity = blaze::normalize(m_ParticlesNew[i].Velocity);
 				m_ParticlesNew[i].Coords += m_ParticlesNew[i].Velocity * m_ParticleVelocity;
