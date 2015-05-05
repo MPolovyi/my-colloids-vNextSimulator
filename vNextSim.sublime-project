@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "D:\\UserData\\Studies\\MovingParticles\\Vicsek\\Vicsek_AMPConsole"
+		}
+	]
+}

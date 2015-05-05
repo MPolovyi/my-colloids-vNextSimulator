@@ -50,7 +50,7 @@ class CSimulationManager
 						Simulator::EBorderConditions::RectangularTransitionalBC,
 						Simulator::EParticleInterractions::VicsekInt,
 						Simulator::EParticleNoise::UniformNoiseRotation,
-						Simulator::EStabilityChecker::NumOfSteps, 500);
+						Simulator::EStabilityChecker::NumOfSteps, 5000);
 		}
 	};
 

@@ -89,7 +89,12 @@
     <ClInclude Include="StabilityCheckers.h">
       <Filter>Simulator\StabilityCheck</Filter>
     </ClInclude>
-    <ClInclude Include="AverageVelocityStabilityChecker.h" />
+    <ClInclude Include="AverageVelocityStabilityChecker.h">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityDispersionXStabilityChecker.h">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -140,6 +145,11 @@
     <ClCompile Include="RectangularHorisontalTransitionBorders.cpp">
       <Filter>Simulator\BorderConditions</Filter>
     </ClCompile>
-    <ClCompile Include="AverageVelocityStabilityChecker.cpp" />
+    <ClCompile Include="AverageVelocityStabilityChecker.cpp">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityDispersionXStabilityChecker.cpp">
+      <Filter>Simulator\StabilityCheck</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -161,6 +161,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AverageVelocityDispersionXStabilityChecker.h" />
     <ClInclude Include="AverageVelocityStabilityChecker.h" />
     <ClInclude Include="BorderConditions.h" />
     <ClInclude Include="JSONSaver.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AverageVelocityDispersionXStabilityChecker.cpp" />
     <ClCompile Include="AverageVelocityStabilityChecker.cpp" />
     <ClCompile Include="JSONSaver.cpp" />
     <ClCompile Include="MaxStepsStabilityChecker.cpp" />

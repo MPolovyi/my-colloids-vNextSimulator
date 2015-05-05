@@ -8,32 +8,27 @@ namespace Simulator
 		public CMaxStepsStabilityChecker<spDim>
 	{
 	public:
-		virtual bool operator()(std::vector<CParticle<spDim>>& particles) override
+		virtual bool operator()(CSimulator<spDim> sim) override
 		{
 			//TODO: add reduction
-			if (++m_CycleSteps > m_MaxSteps)
+
+			if (++m_CycleSteps > m_MaxCycleSteps)
 			{
+				auto particles = sim.GetParticles();
 				m_CycleSteps = 0;
-				return true;
+				blaze::StaticVector<double, spDim> sumVelocity;
+				for (auto& pt : particles)
+				{
+					sumVelocity += pt.Velocity;
+				}
+				double averVelocity = blaze::length(sumVelocity / particles.size());
+				bool checker = (averVelocity - m_PrevAverVelocity) * sqrt(particles.size()) < 1;
+				m_PrevAverVelocity = averVelocity;
+
+				return checker || CMaxStepsStabilityChecker<spDim>::operator()(sim);
 			}
 			else
-			{
-				if (m_CycleSteps > m_MaxCycleSteps)
-				{
-					m_CycleSteps = 0;
-					blaze::StaticVector<double, spDim> sumVelocity;
-					for (auto& pt : particles)
-					{
-						sumVelocity += pt.Velocity;
-					}
-					double averVelocity = blaze::length(sumVelocity / particles.size());
-					if ((averVelocity - m_PrevAverVelocity) * sqrt(particles.size()) < 1)
-					{
-						return true;
-					}
-				}
 				return false;
-			}
 		}
 
 		CAverageVelocityStabilityChecker(int maxSteps, int maxCycle) : CMaxStepsStabilityChecker(maxSteps)
@@ -44,6 +39,7 @@ namespace Simulator
 	
 	protected:
 		double m_PrevAverVelocity;
+		int m_CycleSteps;
 		int m_MaxCycleSteps;
 	};
 

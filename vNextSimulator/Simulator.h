@@ -62,6 +62,13 @@ namespace Simulator
 		//Previous noise, Steps with previous noises
 		std::vector<std::pair<double, int>> PreviousNoises;
 
+		static int NumOfMeaningfulSplits()
+		{
+			int minParticletCountExpected = 300 > (m_ParticleCount * 0.1) ? (m_ParticleCount*0.1) : 300;
+			auto tmp = round(sqrt(m_ParticleCount / minParticletCountExpected));
+			return tmp >= 10 ? tmp : 10;
+		}
+
 		CSimulator(int particleCount, blaze::StaticVector<double, spDim> extents, double ptVelocity,
 			EParticleInterractions ppInterract,
 			EBorderConditions pbInterract,
@@ -234,9 +241,11 @@ namespace Simulator
 				break;
 			case Simulator::AverageVelocity:
 				StabilityChecker = "AverageVelocity";
+				return CAverageVelocityStabilityChecker<spDim>(maxSteps, maxSteps / 50);
 				break;
 			case Simulator::AvVelDispersionX:
 				StabilityChecker = "AvVelDispersionX";
+				return CAverageVelocityDispersionXStabilityChecker<spDim>(maxSteps, maxSteps/50);
 				break;
 			case Simulator::AvVelDispersionY:
 				StabilityChecker = "AvVelDispersionY";
