@@ -1,5 +1,5 @@
 #pragma once
-#include "Simulator.h"
+#include "Particle.h"
 
 namespace Simulator
 {
@@ -8,7 +8,7 @@ namespace Simulator
 	{
 	public:
 		CMaxStepsStabilityChecker(int maxSteps) { m_MaxSteps = maxSteps; };
-		virtual bool operator()(CSimulator<spDim>& sim)
+		virtual bool operator()(std::vector<CParticle<spDim>>& particles)
 		{
 			if (++m_TotalSteps > m_MaxSteps)
 			{

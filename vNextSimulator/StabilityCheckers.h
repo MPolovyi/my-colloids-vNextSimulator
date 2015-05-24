@@ -1,3 +1,7 @@
 #include "MaxStepsStabilityChecker.h"
 #include "AverageVelocityStabilityChecker.h"
 #include "AverageVelocityDispersionXStabilityChecker.h"
+#include "AverageVelocityDispersionYStabilityChecker.h"
+#include "AverageVelocityDispersionZStabilityChecker.h"
+#include "AverageVelocityDispersionYZStabilityChecker.h"
+#include "AverageVelocityDispersionXYStabilityChecker.h"

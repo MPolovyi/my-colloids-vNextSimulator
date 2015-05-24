@@ -1,6 +1,6 @@
 #pragma once
 #include "MaxStepsStabilityChecker.h"
-
+#include "Simulator.h"
 namespace Simulator
 {
 	template<size_t spDim>
@@ -8,12 +8,13 @@ namespace Simulator
 		public CMaxStepsStabilityChecker<spDim>
 	{
 	public:
-		virtual bool operator()(std::vector<CParticle<spDim>>& particles) override
+		virtual bool operator()(CSimulator<spDim> sim) override
 		{
 			//TODO: add reduction
 
 			if (++m_CycleSteps > m_MaxCycleSteps)
 			{
+				auto particles = sim.GetParticles();
 				m_CycleSteps = 0;
 				blaze::StaticVector<double, spDim> sumVelocity;
 				for (auto& pt : particles)
@@ -24,7 +25,7 @@ namespace Simulator
 				bool checker = (averVelocity - m_PrevAverVelocity) * sqrt(particles.size()) < 1;
 				m_PrevAverVelocity = averVelocity;
 
-				return checker || CMaxStepsStabilityChecker<spDim>::operator()(particles);
+				return checker || CMaxStepsStabilityChecker<spDim>::operator()(sim);
 			}
 			else
 				return false;

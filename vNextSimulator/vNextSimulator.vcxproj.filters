@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="vNextSimulator.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="AverageVelocityDispersionXStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxStepsStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformNoiseRotation.cpp">
+      <Filter>Simulator\NoiseFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularHorisontalTransitionBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularRoughKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularTransitionalBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangularTwoSidedKuetteBorders.cpp">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClCompile>
+    <ClCompile Include="JSONSaver.cpp">
+      <Filter>DataSaving</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSnap.cpp">
+      <Filter>DataSaving</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Simulator\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationManager.cpp">
+      <Filter>Simulator\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulator.cpp">
+      <Filter>Simulator\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Simulator\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="VicsecPPInterractor.cpp">
+      <Filter>Simulator\ParticleInterraction</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityDispersionYStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityDispersionXYStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityDispersionZStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageVelocityDispersionYZStabilityChecker.cpp">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="AverageVelocityDispersionXStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxStepsStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformNoiseRotation.h">
+      <Filter>Simulator\NoiseFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularHorisontalTransitionBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularRoughKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularTransitionalBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularTwoSidedKuetteBorders.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="JSONSaver.h">
+      <Filter>DataSaving</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSnap.h">
+      <Filter>DataSaving</Filter>
+    </ClInclude>
+    <ClInclude Include="BorderConditions.h">
+      <Filter>Simulator\BorderConditions</Filter>
+    </ClInclude>
+    <ClInclude Include="StabilityCheckers.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Simulator\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationManager.h">
+      <Filter>Simulator\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulator.h">
+      <Filter>Simulator\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Simulator\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="VicsecPPInterractor.h">
+      <Filter>Simulator\ParticleInterraction</Filter>
+    </ClInclude>
+    <ClInclude Include="AveragingHelpers.h">
+      <Filter>Simulator\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityDispersionYStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityDispersionXYStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityDispersionZStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageVelocityDispersionYZStabilityChecker.h">
+      <Filter>Simulator\StabilityChecker</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Simulator">
+      <UniqueIdentifier>{49a471f4-91b1-47bd-98ef-94816c6db918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\StabilityChecker">
+      <UniqueIdentifier>{2fb4cc74-1517-4afd-9f14-cef53dd32d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\NoiseFunction">
+      <UniqueIdentifier>{50886afc-bf31-4f57-bf25-c557d6b853f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\BorderConditions">
+      <UniqueIdentifier>{e285b794-8216-4d4f-a1e2-17a9da0ae69f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataSaving">
+      <UniqueIdentifier>{a78afe45-e6a5-44d3-b55d-929c2877e3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\Misc">
+      <UniqueIdentifier>{8fbe9ec0-e6e8-42a9-b38f-2efd88d343fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\ParticleInterraction">
+      <UniqueIdentifier>{223a37f8-114b-42b0-85a2-3c632378cb54}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

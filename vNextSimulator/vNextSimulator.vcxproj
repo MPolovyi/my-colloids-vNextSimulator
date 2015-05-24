@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C44E8E81-CF3E-417E-A789-EAB0C1C19524}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MongoCppConnect</RootNamespace>
+    <RootNamespace>vNextSimulator</RootNamespace>
     <ProjectName>vNextSimulator</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -86,12 +86,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\include;D:\UserData\Programming\Utilities\boost_1_57_0\;D:\UserData\Programming\Utilities\blaze-2.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\;D:\UserData\Programming\Utilities\blaze-2.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\lib;D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\mongoCppDriver\lib;D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\UserData\Programming\Utilities\boost_1_57_0\lib64-msvc-12.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,14 +157,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ConsoleParams.txt" />
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="AverageVelocityDispersionXStabilityChecker.h" />
+    <ClInclude Include="AverageVelocityDispersionXYStabilityChecker.h" />
+    <ClInclude Include="AverageVelocityDispersionYStabilityChecker.h" />
+    <ClInclude Include="AverageVelocityDispersionYZStabilityChecker.h" />
+    <ClInclude Include="AverageVelocityDispersionZStabilityChecker.h" />
     <ClInclude Include="AverageVelocityStabilityChecker.h" />
     <ClInclude Include="BorderConditions.h" />
     <ClInclude Include="JSONSaver.h" />
+    <ClInclude Include="AveragingHelpers.h" />
     <ClInclude Include="MaxStepsStabilityChecker.h" />
     <ClInclude Include="RectangularHorisontalTransitionBorders.h" />
     <ClInclude Include="RectangularKuetteBorders.h" />
@@ -184,6 +185,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AverageVelocityDispersionXStabilityChecker.cpp" />
+    <ClCompile Include="AverageVelocityDispersionXYStabilityChecker.cpp" />
+    <ClCompile Include="AverageVelocityDispersionYStabilityChecker.cpp" />
+    <ClCompile Include="AverageVelocityDispersionYZStabilityChecker.cpp" />
+    <ClCompile Include="AverageVelocityDispersionZStabilityChecker.cpp" />
     <ClCompile Include="AverageVelocityStabilityChecker.cpp" />
     <ClCompile Include="JSONSaver.cpp" />
     <ClCompile Include="MaxStepsStabilityChecker.cpp" />

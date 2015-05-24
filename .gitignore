@@ -30,5 +30,7 @@ _ReSharper*/
 
 x64/
 MongoData/
+packages/*
 ipch/
 *.*sdf
+*.tmp

@@ -62,13 +62,6 @@ namespace Simulator
 		//Previous noise, Steps with previous noises
 		std::vector<std::pair<double, int>> PreviousNoises;
 
-		static int NumOfMeaningfulSplits()
-		{
-			int minParticletCountExpected = 300 > (m_ParticleCount * 0.1) ? (m_ParticleCount*0.1) : 300;
-			auto tmp = round(sqrt(m_ParticleCount / minParticletCountExpected));
-			return tmp >= 10 ? tmp : 10;
-		}
-
 		CSimulator(int particleCount, blaze::StaticVector<double, spDim> extents, double ptVelocity,
 			EParticleInterractions ppInterract,
 			EBorderConditions pbInterract,
@@ -233,40 +226,64 @@ namespace Simulator
 		std::function<bool(std::vector<CParticle<spDim>>&)>
 			CreateStabilityChecker(EStabilityChecker stCheck, int maxSteps)
 		{
-			switch (stCheck)
-			{
-			case Simulator::NumOfSteps:
-				StabilityChecker = "NumOfSteps";
-				return CMaxStepsStabilityChecker<spDim>(maxSteps);
-				break;
-			case Simulator::AverageVelocity:
-				StabilityChecker = "AverageVelocity";
-				return CAverageVelocityStabilityChecker<spDim>(maxSteps, maxSteps / 50);
-				break;
-			case Simulator::AvVelDispersionX:
-				StabilityChecker = "AvVelDispersionX";
-				return CAverageVelocityDispersionXStabilityChecker<spDim>(maxSteps, maxSteps/50);
-				break;
-			case Simulator::AvVelDispersionY:
-				StabilityChecker = "AvVelDispersionY";
-				break;
-			case Simulator::AvVelDispersionZ:
-				StabilityChecker = "AvVelDispersionZ";
-				break;
-			case Simulator::AvVelDispersionXY:
-				StabilityChecker = "AvVelDispersionXY";
-				break;
-			case Simulator::AvVelDispresionYZ:
-				StabilityChecker = "AvVelDispresionYZ";
-				break;
-			case Simulator::AvVelDispersionXYZ:
-				StabilityChecker = "AvVelDispersionXYZ";
-				break;
-			default:
-				StabilityChecker = "NumOfSteps";
-				return CMaxStepsStabilityChecker<spDim>(maxSteps);
-				break;
+				switch (stCheck)
+				{
+				case Simulator::NumOfSteps:
+					StabilityChecker = "NumOfSteps";
+					return CMaxStepsStabilityChecker<spDim>(maxSteps);
+					break;
+				case Simulator::AverageVelocity:
+					StabilityChecker = "AverageVelocity";
+					return CAverageVelocityStabilityChecker<spDim>(maxSteps, maxSteps / 50);
+					break;
+				case Simulator::AvVelDispersionX:
+					StabilityChecker = "AvVelDispersionX";
+					return CAverageVelocityDispersionXStabilityChecker<spDim>(maxSteps, maxSteps / 50, Extents);
+					break;
+				case Simulator::AvVelDispersionY:
+					StabilityChecker = "AvVelDispersionY";
+					return CAverageVelocityDispersionYStabilityChecker<spDim>(maxSteps, maxSteps / 50, Extents);
+					break;
+				case Simulator::AvVelDispersionXY:
+					StabilityChecker = "AvVelDispersionXY";
+					return CAverageVelocityDispersionXYStabilityChecker<spDim>(maxSteps, maxSteps / 50, Extents);
+					break;
+				default:
+					return CreateStabilityChecker(stCheck, maxSteps, Extents);
+					break;
+				}
+
 			}
-		}
+
+		std::function<bool(std::vector<CParticle<2UL>>&)>
+			CreateStabilityChecker(EStabilityChecker stCheck, int maxSteps, blaze::StaticVector<double, 2UL> extents)
+		{
+				return CMaxStepsStabilityChecker<spDim>(maxSteps);
+			}
+
+		std::function<bool(std::vector<CParticle<3UL>>&)>
+			CreateStabilityChecker(EStabilityChecker stCheck, int maxSteps, blaze::StaticVector<double, 3UL> extents)
+		{
+				switch (stCheck)
+				{
+				
+				case Simulator::AvVelDispersionZ:
+					StabilityChecker = "AvVelDispersionZ";
+					return CAverageVelocityDispersionZStabilityChecker(maxSteps, maxSteps / 50, Extents);
+					break;
+				case Simulator::AvVelDispresionYZ:
+					return CAverageVelocityDispersionYZStabilityChecker(maxSteps, maxSteps / 50, Extents);
+					StabilityChecker = "AvVelDispresionYZ";
+					break;
+				case Simulator::AvVelDispersionXYZ:
+					StabilityChecker = "AvVelDispersionXYZ";
+					return CAverageVelocityDispersionXYZStabilityChecker<spDim>(maxSteps, maxSteps / 50, Extents);
+					break;
+				default:
+					StabilityChecker = "NumOfSteps";
+					return CMaxStepsStabilityChecker<spDim>(maxSteps);
+					break;
+				}
+			}
 	};
 }

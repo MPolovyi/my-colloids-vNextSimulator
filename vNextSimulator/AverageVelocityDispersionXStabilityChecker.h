@@ -1,6 +1,6 @@
 #pragma once
 #include "AverageVelocityStabilityChecker.h"
-#include "DataSnap.h"
+#include "AveragingHelpers.h"
 
 namespace Simulator
 {
@@ -9,62 +9,44 @@ namespace Simulator
 		public CAverageVelocityStabilityChecker<spDim>
 	{
 	public:
-		CAverageVelocityDispersionXStabilityChecker(int maxSteps, int maxCycle) :
-			CAverageVelocityStabilityChecker(maxSteps, maxCycle) {};
+		CAverageVelocityDispersionXStabilityChecker(int maxSteps, int maxCycle, blaze::StaticVector<double, spDim> extents) :
+			CAverageVelocityStabilityChecker(maxSteps, maxCycle), m_Extents(extents)
+		{
+			
+		};
 
-		virtual bool operator()(CSimulator<spDim>& sim) override
+		virtual bool operator()(std::vector<CParticle<spDim>>& particles) override
 		{
 			if (m_CycleSteps > m_MaxCycleSteps)
 			{
-				auto dispersion = GetDispersion(sim);
+				auto dispersion = GetDispersion(particles);
 				m_CycleSteps=0;
 				bool checker = true;
 				for(int i = 0; i < dispersion.size(); i++)
 				{
-					checker = checker && (dispersion[i] - m_PrevDispersion[i]) * sqrt(particles.size()) < 1
+					checker = checker && (dispersion[i] - m_PrevDispersion[i]) * sqrt(particles.size()) < 1;
 				}
 				m_PrevDispersion = dispersion;
-				return checker || CMaxStepsStabilityChecker<spDim>::operator()(sim);
+				return checker || CMaxStepsStabilityChecker<spDim>::operator()(particles);
 			}
 			else
 				return false;
 		}
 
-		virtual blaze::StaticVector<double, spDim> GetDispersion(CSimulator<spDim>& sim)
+
+		blaze::StaticVector<double, spDim> GetDispersion(std::vector<CParticle<spDim>>& particles)
 		{
-			auto particles = sim.GetParticles();
-			auto CoordsAndExtents = CDataSnap<spDim>::PrepareExtents(sim.Extents, CSimulator<spDim>::NumOfMeaningfulSplits(), 0);
+			InitNumOfSplits(particles.size());
+			auto CoordsAndExtents = AveragingHelpers::PrepareExtents(m_Extents, m_NumOfSplits);
 			
 			std::vector<blaze::StaticVector<double, spDim>> velocities;
-			velocities.resize(CoordsAndExtents.size());
-
-			std::vector<int> particleCount;
-			particleCount.resize(CoordsAndExtents.size());
 			
-			std::vector<std::thread> workers;
-			for (int i = 0; i < CoordsAndExtents.size(); i++)
-			{
-				workers.push_back(std::thread(
-					[](std::vector<blaze::StaticVector<double, spDim>>& velocities,
-					std::vector<CParticle<spDim>>& particles,
-					std::vector<std::pair<blaze::StaticVector<double, spDim>, blaze::StaticVector<double, spDim>>>& CoordsAndExtents,
-					std::vector<int>& particleCount,
-					int index) {
-					for (auto& particle : particles)
-					{
-						blaze::StaticVector<double, spDim> particleVector = blaze::abs(particle.Coords - CoordsAndExtents[index].first);
+			std::vector<int> particleCount;
+			
+			AveragingHelpers::GetParticleVelocityAveragedByExtents(
+				particles, CoordsAndExtents, velocities, particleCount);
 
-						if (particleVector[0] <= CoordsAndExtents[index].second[0] &&
-							particleVector[1] <= CoordsAndExtents[index].second[1])
-						{
-							velocities[index] += particle.Velocity;
-							particleCount[index] += 1;
-						}
-					}}, std::ref(velocities), std::ref(particles), std::ref(CoordsAndExtents), std::ref(particleCount), i));
-			}
-			std::for_each(workers.begin(), workers.end(), [](std::thread &t) { t.join(); });
-
-			concurrency::parallel_for(0, velocities.size(), [&](int i){
+			concurrency::parallel_for(size_t(0), velocities.size(), [&](int i) {
 				velocities[i] /= particleCount[i] != 0 ? particleCount[i] : 1;
 			});
 
@@ -82,8 +64,24 @@ namespace Simulator
 		}
 
 		virtual ~CAverageVelocityDispersionXStabilityChecker(){};
-	private:
+	protected:
+
+		virtual void InitNumOfSplits(int numOfParticles)
+		{
+			double* a = new double[spDim];
+
+			a[0] = AveragingHelpers::NumOfMeaningfulSplits(numOfParticles);
+			for (int i = 1; i < spDim; i++)
+			{
+				a[i] = 0;
+			}
+
+			m_NumOfSplits = blaze::StaticVector<double, spDim>(spDim, a);
+		}
+
 		blaze::StaticVector<double, spDim> m_PrevDispersion;
+		blaze::StaticVector<double, spDim> m_Extents;
+		blaze::StaticVector<double, spDim> m_NumOfSplits;
 	};
 
 }
