@@ -19,7 +19,7 @@ namespace AveragingHelpers
 		};
 
 	inline std::vector<std::pair<blaze::Vec3d, blaze::Vec3d>> 
-		PrepareExtents(blaze::Vec3d squareArea, blaze::Vec3d num)
+		PrepareExtents(blaze::Vec3d& squareArea, blaze::Vec3d& num)
 	{
 		std::vector<std::pair<blaze::Vec3d, blaze::Vec3d>> extents;
 		//TODO:
@@ -44,7 +44,7 @@ namespace AveragingHelpers
 	}
 	
 	inline std::vector<std::pair<blaze::Vec2d, blaze::Vec2d>> 
-		PrepareExtents(blaze::Vec2d squareArea, blaze::Vec2d num)
+		PrepareExtents(blaze::Vec2d& squareArea, blaze::Vec2d& num)
 	{
 		std::vector<std::pair<blaze::Vec2d, blaze::Vec2d>> extents;
 
