@@ -17,7 +17,7 @@
 #include <vector>
 #include <functional>
 #include <string>
-#include <ppl.h>
+//#include <ppl.h>
 
 #include "blaze\Blaze.h"
 
